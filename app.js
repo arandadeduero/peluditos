@@ -6,8 +6,6 @@ const catBtns = document.querySelectorAll('[data-cat]');
 const PLACEHOLDER = 'img/placeholder.svg';
 const TYPE_LABEL = { perro: '🐶 Perro', gato: '🐱 Gato', otro: '🐾 Otro' };
 const CAT_LABEL = { adopcion: '🏠 Adopción', acogida: '🤝 Acogida', perdido: '🔍 Perdido', donacion: '💚 Donación', evento: '📅 Evento' };
-// Etiqueta corta para el desplegable de filtros (la tarjeta mantiene el nombre completo).
-const SHELTER_FILTER_LABEL = { 'Peluditos en Aldea Pucela': 'Comunidad Aldea Pucela' };
 
 let posts = [];
 let filterType = 'todos';
@@ -66,7 +64,7 @@ function card(p) {
   const vids = new Set(Array.isArray(p.videos) ? p.videos : []); // índices de diapositivas que son vídeo
   const slides = imgs.map((s, i) => `
         <a class="carousel__slide" href="${href}" target="_blank" rel="noopener" aria-label="${(multi ? `Foto ${i + 1} de ${imgs.length} — ` : '') + alt + (vids.has(i) ? ' (vídeo)' : '')}">
-          <img class="card__img${p.source === 'telegram' ? ' card__img--contain' : ''}" loading="lazy" alt="${alt}" src="${escapeHtml(s)}" onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
+          <img class="card__img" loading="lazy" alt="${alt}" src="${escapeHtml(s)}" onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
           ${vids.has(i) ? '<span class="carousel__play" aria-hidden="true"></span>' : ''}
         </a>`).join('');
 
@@ -90,7 +88,7 @@ function card(p) {
       </div>
       <p class="card__text"><span class="card__caption">${escapeHtml(short)}</span>${hasMore ? ` <button type="button" class="card__more" aria-expanded="false">más</button>` : ''}</p>
       <div class="card__meta">
-        <a class="card__cta" href="${href}" target="_blank" rel="noopener">${p.source === 'telegram' ? 'Ver en Telegram →' : 'Ver en Instagram →'}</a>
+        <a class="card__cta" href="${href}" target="_blank" rel="noopener">Ver en Instagram →</a>
         <button type="button" class="card__share" aria-label="Copiar enlace a esta ficha" title="Copiar enlace a esta ficha">🔗</button>
       </div>
     </div>`;
@@ -284,7 +282,7 @@ function initFilters() {
   for (const n of [...new Set(posts.map((p) => p.shelter))].sort()) {
     const o = document.createElement('option');
     o.value = n;
-    o.textContent = SHELTER_FILTER_LABEL[n] || n;
+    o.textContent = n;
     shelterSel.appendChild(o);
   }
   shelterSel.addEventListener('change', () => {

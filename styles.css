@@ -1,6 +1,6 @@
-/* Peluditos — diseño alineado con eventos.aldeapucela.org */
+/* Peluditos — Ayuntamiento de Aranda de Duero */
 :root {
-  /* paleta brand (violetas de eventos.aldeapucela.org) */
+  /* paleta brand */
   --brand-50: #f5f1fb;
   --brand-100: #ebe3f6;
   --brand-200: #d8c9ee;
@@ -283,9 +283,6 @@ main.container { padding-bottom: 3rem; }
 .card:target,
 .card.is-target { outline: 2px solid var(--brand-400); outline-offset: 3px; } /* resalta la ficha enlazada */
 .card__img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--brand-50); display: block; }
-/* Fuentes cuyas imágenes son carteles cuadrados (p. ej. Telegram): mostrar la imagen COMPLETA,
-   sin recortar los bordes (se perdían teléfonos/textos), aunque queden franjas arriba/abajo. */
-.card__img--contain { object-fit: contain; }
 
 /* Carrusel de imágenes (publicaciones con varias fotos). 1 sola imagen = sin controles. */
 .card__media { position: relative; }
@@ -523,3 +520,46 @@ main.container { padding-bottom: 3rem; }
   transition: color .2s, text-decoration-color .2s;
 }
 .site-footer a:hover { color: var(--brand-700); text-decoration-color: var(--brand-300); }
+
+/* ===== Aviso de consentimiento de analítica (GDPR) ===== */
+.analytics-consent {
+  position: fixed;
+  z-index: 400;
+  inset: auto 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .6rem 1rem;
+  border-top: 1px solid var(--line);
+  background: var(--paper);
+  padding: .85rem 1rem calc(.85rem + env(safe-area-inset-bottom));
+  box-shadow: 0 -.6rem 2rem rgba(15, 18, 23, .12);
+}
+.analytics-consent[hidden] { display: none !important; }
+.analytics-consent-text {
+  flex: 1 1 20rem;
+  max-width: 42rem;
+  margin: 0;
+  color: var(--slate-600);
+  font-size: .85rem;
+  line-height: 1.45;
+}
+.analytics-consent-text a { color: var(--brand-600); font-weight: 700; text-decoration: underline; }
+.analytics-consent-actions { display: flex; flex: 0 0 auto; gap: .5rem; }
+.analytics-consent-btn {
+  min-height: 2.4rem;
+  border: 1px solid transparent;
+  border-radius: .65rem;
+  padding: 0 1.1rem;
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.analytics-consent-deny { border-color: var(--line); background: #fff; color: var(--slate-600); }
+.analytics-consent-accept { background: var(--brand-500); color: #fff; }
+.analytics-consent-deny:hover,
+.analytics-consent-deny:focus-visible { background: var(--brand-50); }
+.analytics-consent-accept:hover,
+.analytics-consent-accept:focus-visible { background: var(--brand-600); }

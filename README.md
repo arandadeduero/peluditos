@@ -1,10 +1,10 @@
 # 🐾 Peluditos
 
 Agrega en una sola página las publicaciones recientes de Instagram de las protectoras y
-asociaciones de animales de **Valladolid**, para que quien busca adoptar no tenga que entrar
-en 12+ cuentas distintas. Una web de la comunidad de [Aldea Pucela](https://aldeapucela.org).
+asociaciones de animales de **Aranda de Duero**, para que quien busca adoptar no tenga que
+entrar en varias cuentas distintas. Una web del **Ayuntamiento de Aranda de Duero**.
 
-**En vivo:** <https://peluditos.aldeapucela.org>
+**En vivo:** <https://peluditos.arandadeduero.dev>
 
 Sitio **estático** (HTML/CSS/JS vanilla, sin build ni framework) que lee unos JSON generados a
 diario por un script Node **sin dependencias**, ejecutado por **GitHub Actions** y servido por
@@ -31,30 +31,6 @@ shelters.json ─┐
 - **Archivo** (`/archivo/`): lo que supera los ~4 meses, por años.
 - **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público.
 
-### Comunidad → Telegram → web
-
-Además de Instagram, la comunidad puede aportar carteles (perdidos, adopciones…) desde el
-**subtema «Peluditos»** del grupo de Telegram [@AldeaPucela](https://t.me/AldeaPucela/91148).
-Un **admin** del grupo responde a la foto con el comando **`/webpeluditos`** y un workflow de
-**n8n** (fuera de este repo) la publica:
-
-```
-Telegram (subtema Peluditos) ─┐
-  un ADMIN responde            ├─ n8n: workflow "Comandos admin Telegram"
-  /webpeluditos a una foto     │     1. webhook   → recibe el comando (mismo bot que /permitirfotos)
-                               │     2. valida    → admin + reply a foto del subtema Peluditos
-                               │     3. imagen    → descarga y commitea img/tg-<id>.jpg (API GitHub)
-                               │     4. publica   → añade la ficha a data/posts.json (source: "telegram")
-                               │     5. clasifica → dispara update.yml con classify_only=1 (Gemini)
-                               │     6. responde  → avisa en Telegram con el enlace a la web
-                               └─ el push (PAT) dispara deploy-pages.yml → GitHub Pages
-```
-
-Se muestran en la portada como una fuente más (**«Peluditos en Aldea Pucela»**), con la imagen
-completa (`object-fit: contain`, para no recortar carteles), enlace al mensaje de Telegram y
-ancla `#post-tg-<id>`. **No** entran en el aviso diario de Instagram. Una ficha por foto (los
-álbumes no se agrupan: el admin responde a la foto concreta que quiere publicar).
-
 ## Estructura
 
 | Ruta | Qué es |
@@ -62,11 +38,12 @@ ancla `#post-tg-<id>`. **No** entran en el aviso diario de Instagram. Una ficha 
 | `index.html`, `archivo/`, `protectoras/` | Las tres páginas (comparten `styles.css` y `app.js`). |
 | `app.js` | Render de tarjetas + filtros + «Mostrar más» + anclas (portada y archivo). |
 | `nav.js` | Menú hamburguesa en móvil. |
-| `scripts/fetch.mjs` | Pipeline de Instagram (fetch + clasificación + partición + poda). También clasifica las fichas de Telegram que sube n8n. |
+| `analytics.js` | Google Analytics 4 con consentimiento explícito (banner «Aceptar»/«Denegar»). |
+| `scripts/fetch.mjs` | Pipeline de Instagram (fetch + clasificación + partición + poda). |
 | `scripts/lib.mjs` | Utilidades del pipeline (`excerpt`, clasificación Gemini). |
 | `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto. |
 | `data/posts.json` · `data/archive/*.json` | Datos generados (portada / archivo). |
-| `img/` | Imágenes de posts (`<shortcode>.jpg`, Telegram `tg-<id>.jpg`) + assets (`logo.svg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
+| `img/` | Imágenes de posts (`<shortcode>.jpg`) + assets (`logo.svg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
 | `.github/workflows/` | `update.yml` (cron Instagram + clasificación) y `deploy-pages.yml` (despliega en cada push). |
 
 ## Puesta en marcha
@@ -89,11 +66,6 @@ ancla `#post-tg-<id>`. **No** entran en el aviso diario de Instagram. Una ficha 
    El despliegue lo hacen los workflows. Dominio propio vía fichero [`CNAME`](CNAME).
 6. **Contacto:** cada protectora gestiona sus adopciones; el sitio enlaza a la publicación
    original y da los contactos públicos de cada una. Textos del pie en las páginas HTML.
-7. **Telegram** (opcional, fuente comunitaria). El comando `/webpeluditos` vive en un workflow
-   de **n8n** con el bot del grupo (webhook), no en este repo. Necesita: *Group Privacy* del bot
-   **desactivado** (o el bot como **admin**) para ver las fotos, y una credencial de GitHub (PAT
-   con `contents:write` + `actions:write`) para commitear y disparar `update.yml`
-   (`classify_only=1`).
 
 ## Desarrollo local
 
@@ -106,7 +78,7 @@ python3 -m http.server                                        # sirve el sitio e
 
 ## Operación y mantenimiento
 
-- **El cron** (`update.yml`, `0 9 * * *` UTC) es *best-effort*: GitHub lo **retrasa horas** o lo
+- **El cron** (`update.yml`, `0 5 * * *` UTC) es *best-effort*: GitHub lo **retrasa horas** o lo
   salta. Para forzarlo: Actions → *Actualizar publicaciones* → *Run workflow* (o
   `gh workflow run "Actualizar publicaciones"`).
 - **Despliegue.** Se hace por GitHub Actions. Ojo: los push del cron usan `GITHUB_TOKEN`, que
@@ -115,10 +87,7 @@ python3 -m http.server                                        # sirve el sitio e
   later"), es transitorio: relanzar *Desplegar en GitHub Pages*.
 - **Añadir/quitar protectora o contactos/logos:** editar `shelters.json` (y opcionalmente subir
   `img/shelters/<username>.jpg`). Nada más.
-- **Publicación desde Telegram** (`/webpeluditos`): la gestiona n8n. Si una ficha queda sin
-  clasificar (falló el dispatch o Gemini), el cron diario de `update.yml` la completa. Para
-  forzar solo la clasificación: `gh workflow run "Actualizar publicaciones" -f classify_only=1`.
-- **Verificar en vivo** saltando la caché del CDN: `curl "https://peluditos.aldeapucela.org/data/posts.json?cb=$RANDOM"`.
+- **Verificar en vivo** saltando la caché del CDN: `curl "https://peluditos.arandadeduero.dev/data/posts.json?cb=$RANDOM"`.
 
 ## Ajustes (en `scripts/fetch.mjs`)
 
@@ -130,8 +99,19 @@ python3 -m http.server                                        # sirve el sitio e
 ## Notas
 
 - **Términos de Instagram:** leer cuentas ajenas sin permiso está en zona gris de sus términos.
-  Uso vecinal y sin ánimo de lucro; se enlaza siempre al post original y el contacto de adopción
-  es directo con cada protectora. El proveedor de datos asume la parte técnica.
+  Uso sin ánimo de lucro; se enlaza siempre al post original y el contacto de adopción es
+  directo con cada protectora. El proveedor de datos asume la parte técnica.
 - **Contenido:** las imágenes y textos pertenecen a cada protectora. Licencia del proyecto:
-  **[CC BY-SA 4.0](LICENSE)**. Analítica con **Matomo** (stats.aldeapucela.org).
+  **[CC BY-SA 4.0](LICENSE)**.
+- **Analítica:** Google Analytics 4 (`G-BXMC22W46S`, el mismo tracker que usa
+  [fiestas.arandadeduero.es](https://github.com/arandadeduero/fiestas)) con consentimiento
+  explícito: el script no se carga ni envía nada hasta que se pulsa «Aceptar» en el aviso
+  inferior; «Denegar» se recuerda igual (`localStorage`, clave `peluditosAranda:analytics-consent`).
 - **Fuera de alcance (por ahora):** buscador de texto, filtro por zona, pre-render para SEO.
+
+## Créditos
+
+Este proyecto es una adaptación de **Peluditos**, creado originalmente por vecinos voluntarios
+de la comunidad de [Aldea Pucela](https://aldeapucela.org) para las protectoras de Valladolid.
+Gracias a su equipo por el diseño y la infraestructura original en los que se basa esta versión
+para Aranda de Duero.
