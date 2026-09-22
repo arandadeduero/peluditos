@@ -1,5 +1,22 @@
 [
   {
+    "id": "issue-1",
+    "shelter": "FeliniSave",
+    "shelterUrl": "https://www.instagram.com/felinisave/",
+    "zone": "Aranda de Duero",
+    "date": "2026-09-22T15:15:28Z",
+    "caption": "Gatititow. Un gato muy majo",
+    "excerpt": "Gatititow. Un gato muy majo",
+    "image": "img/issue-1.jpg",
+    "images": [
+      "img/issue-1.jpg"
+    ],
+    "permalink": "https://github.com/arandadeduero/peluditos/issues/1",
+    "type": "gato",
+    "tipo": "adopcion",
+    "source": "issue"
+  },
+  {
     "id": "ejemplo-001",
     "shelter": "Huellaranda",
     "shelterUrl": "https://www.instagram.com/huellaranda/",
@@ -8,7 +25,9 @@
     "caption": "Esta es una ficha de ejemplo. Aquí aparecerán las publicaciones reales de las protectoras de Aranda de Duero en cuanto se active la sincronización automática con sus cuentas de Instagram.",
     "excerpt": "Esta es una ficha de ejemplo. Aquí aparecerán las publicaciones reales de las protectoras de Aranda de Duero en cuanto se active la sincronización automática con sus cuentas de Instagram.",
     "image": "img/placeholder.svg",
-    "images": ["img/placeholder.svg"],
+    "images": [
+      "img/placeholder.svg"
+    ],
     "permalink": "https://www.instagram.com/huellaranda/",
     "type": "otro",
     "tipo": "otro"
