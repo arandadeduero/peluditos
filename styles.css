@@ -169,6 +169,22 @@ a { color: var(--brand-600); }
   color: var(--slate-600);
 }
 @media (min-width: 1024px) { .hero__subtitle { font-size: 1.25rem; } }
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: 1.25rem;
+  padding: .7rem 1.3rem;
+  border-radius: 999px;
+  background: var(--brand-500);
+  color: #fff;
+  font-weight: 700;
+  font-size: .92rem;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(0, 131, 193, .25);
+  transition: background .2s, transform .2s;
+}
+.hero__cta:hover { background: var(--brand-600); transform: translateY(-1px); }
 /* velo suave para legibilidad del texto sobre la foto en pantallas estrechas */
 @media (max-width: 767px) {
   /* Menú hamburguesa */
