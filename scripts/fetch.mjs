@@ -304,5 +304,9 @@ function selfTest() {
   console.log('self-test OK');
 }
 
-if (process.argv.includes('--self-test')) selfTest();
-else main().catch((e) => { console.error(e); process.exit(1); });
+// Guardado tras `import.meta.url === process.argv[1]`: así scripts/parse-archive-issue.mjs
+// puede importar groupByYear sin disparar main() (que exige IG_API_TOKEN) ni selfTest().
+if (import.meta.url === `file://${process.argv[1]}`) {
+  if (process.argv.includes('--self-test')) selfTest();
+  else main().catch((e) => { console.error(e); process.exit(1); });
+}

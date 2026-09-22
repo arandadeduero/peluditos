@@ -49,7 +49,7 @@ Issue "🐾 Nuevo animal" ─┐
                          └─ el PR NO se fusiona solo: hace falta revisión y aprobación manual
 
 PR fusionado (manual) ─┐
-                        ├─ animal-issue-closed.yml
+                        ├─ issue-flow-closed.yml
                         │     el propio PR cierra el issue (lleva "Closes #<n>"); este workflow
                         │     solo añade el aviso final: publicado (si se fusionó) o
                         │     necesita-cambios (si se cerró sin fusionar, para reintentarlo)
@@ -60,6 +60,14 @@ Solo se admite **una** foto por issue (si detecta más de una, pide dejar solo u
 protectora debe coincidir exactamente con un `name` de [`shelters.json`](shelters.json); añadir
 una protectora nueva a esa lista implica también añadir su opción en la plantilla
 [`nuevo-animal.yml`](.github/ISSUE_TEMPLATE/nuevo-animal.yml).
+
+Para retirar una ficha ya publicada (adoptada, caso cerrado, duplicada...) hay un segundo flujo,
+plantilla **🗄️ Archivar animal**: solo pide el **id** de la ficha (se ve en la propia web, botón
+🔗 de cada tarjeta → lo que va tras `#post-` en el enlace copiado), más nombre/descripción
+opcionales solo como referencia humana. `archive-issue.yml` valida que ese id exista en
+`data/posts.json` y, si es así, abre un PR que la mueve a `data/archive/<AAAA>.json`
+(reconstruyendo el índice de años, igual que `fetch.mjs`) — mismo esquema de validación → PR →
+revisión manual → `issue-flow-closed.yml` que el alta.
 
 ## Estructura
 
@@ -72,11 +80,12 @@ una protectora nueva a esa lista implica también añadir su opción en la plant
 | `scripts/fetch.mjs` | Pipeline de Instagram (fetch + clasificación + partición + poda). |
 | `scripts/lib.mjs` | Utilidades del pipeline (`excerpt`, clasificación Gemini). |
 | `scripts/parse-animal-issue.mjs` | Valida un issue "Nuevo animal" y genera su ficha (ver abajo). |
+| `scripts/parse-archive-issue.mjs` | Valida un issue "Archivar animal" y mueve la ficha al archivo. |
 | `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto. |
 | `data/posts.json` · `data/archive/*.json` | Datos generados (portada / archivo). |
 | `img/` | Imágenes de posts (`<shortcode>.jpg`, `issue-<n>.jpg`) + assets (`logo-web.jpg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
-| `.github/ISSUE_TEMPLATE/nuevo-animal.yml` | Formulario para proponer una ficha desde un issue. |
-| `.github/workflows/` | `update.yml` (cron Instagram + clasificación), `deploy-pages.yml` (despliega en cada push), `animal-issue.yml` + `animal-issue-closed.yml` (fichas propuestas por issue). |
+| `.github/ISSUE_TEMPLATE/` | `nuevo-animal.yml` y `archivar-animal.yml`: formularios para proponer/retirar una ficha desde un issue. |
+| `.github/workflows/` | `update.yml` (cron Instagram + clasificación), `deploy-pages.yml` (despliega en cada push), `animal-issue.yml` + `archive-issue.yml` + `issue-flow-closed.yml` (fichas por issue). |
 
 ## Puesta en marcha
 

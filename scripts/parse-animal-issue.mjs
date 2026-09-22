@@ -18,7 +18,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { excerpt } from './lib.mjs';
+import { excerpt, parseIssueBody } from './lib.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SHELTERS = path.join(ROOT, 'shelters.json');
@@ -35,19 +35,7 @@ const CATEGORIA_MAP = {
   otra: 'otro', otro: 'otro',
 };
 
-// Un issue form vuelca el cuerpo como Markdown: "### <etiqueta>" + línea en blanco +
-// respuesta (o "_No response_" si el campo era opcional y se dejó vacío).
-export function parseIssueBody(body) {
-  const fields = {};
-  const re = /^### (.+?)\r?\n+([\s\S]*?)(?=\r?\n### |\r?\n*$)/gm;
-  let m;
-  while ((m = re.exec(body || '')) !== null) {
-    const label = m[1].trim();
-    const value = m[2].trim();
-    fields[label] = value === '_No response_' ? '' : value;
-  }
-  return fields;
-}
+// parseIssueBody vive en lib.mjs (la comparte parse-archive-issue.mjs).
 
 // Solo confiamos en imágenes servidas por los propios CDN de adjuntos de GitHub. Según el
 // cliente (arrastrar, pegar, móvil...) el issue las vuelca como Markdown "![]()" o como

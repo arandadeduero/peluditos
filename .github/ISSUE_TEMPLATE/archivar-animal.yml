@@ -1,0 +1,41 @@
+name: "🗄️ Archivar animal"
+description: Mueve una ficha ya publicada de la portada al archivo (adoptado, caso cerrado, duplicado, etc.)
+title: "[Archivar] "
+labels: ["archivar-animal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Para archivar una ficha hace falta su **id**. Lo encuentras en la propia web: pulsa el
+        botón 🔗 "Copiar enlace a esta ficha" en la tarjeta — el id es lo que aparece después de
+        `#post-` en el enlace copiado (ej. `.../#post-issue-1` → id `issue-1`).
+
+        Un workflow automático comprobará que ese id existe en la portada. Si es correcto,
+        abrirá un Pull Request que mueve la ficha al archivo — para revisión manual antes de
+        fusionar.
+
+  - type: input
+    id: post_id
+    attributes:
+      label: Id de la ficha
+      description: Tal cual aparece tras "#post-" en el enlace de la ficha.
+      placeholder: "Ej: issue-1"
+    validations:
+      required: true
+
+  - type: input
+    id: nombre
+    attributes:
+      label: Nombre del animal (opcional)
+      description: Solo para identificarla mejor al revisar el issue.
+      placeholder: "Ej: Thor"
+    validations:
+      required: false
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción (opcional)
+      description: Por qué se archiva o cualquier detalle relevante (adoptado, caso cerrado, duplicado, error...).
+    validations:
+      required: false

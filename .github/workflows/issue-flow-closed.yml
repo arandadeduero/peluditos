@@ -1,0 +1,52 @@
+name: Cerrar ficha tras el PR
+
+# Ambos flujos de ficha por issue (animal-issue.yml → rama animal-issue-<n>, archive-issue.yml
+# → rama archive-issue-<n>) llevan "Closes #<n>" en la descripción del PR, así que GitHub cierra
+# el issue solo al fusionar — esto solo añade el aviso/etiqueta final en ambos casos: éxito
+# (fusionado) o rechazado (cerrado sin fusionar).
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  issues: write
+
+jobs:
+  wrap-up:
+    if: startsWith(github.event.pull_request.head.ref, 'animal-issue-') || startsWith(github.event.pull_request.head.ref, 'archive-issue-')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Extraer número de issue y tipo de flujo de la rama
+        id: issue
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          if [[ "$HEAD_REF" == archive-issue-* ]]; then
+            echo "kind=archive" >> "$GITHUB_OUTPUT"
+            echo "number=${HEAD_REF#archive-issue-}" >> "$GITHUB_OUTPUT"
+          else
+            echo "kind=publish" >> "$GITHUB_OUTPUT"
+            echo "number=${HEAD_REF#animal-issue-}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publicado (PR fusionado)
+        if: ${{ github.event.pull_request.merged == true && steps.issue.outputs.kind == 'publish' }}
+        run: |
+          gh issue edit "${{ steps.issue.outputs.number }}" --add-label "publicado" --remove-label "pr-abierto" 2>/dev/null || true
+          gh issue comment "${{ steps.issue.outputs.number }}" --body "🎉 ¡Publicado! Ya puedes verlo en https://peluditos.arandadeduero.dev/#post-issue-${{ steps.issue.outputs.number }}"
+
+      - name: Archivado (PR fusionado)
+        if: ${{ github.event.pull_request.merged == true && steps.issue.outputs.kind == 'archive' }}
+        run: |
+          gh issue edit "${{ steps.issue.outputs.number }}" --add-label "archivado" --remove-label "pr-abierto" 2>/dev/null || true
+          gh issue comment "${{ steps.issue.outputs.number }}" --body "🗄️ Ficha archivada. Ya no aparece en la portada; puedes encontrarla en https://peluditos.arandadeduero.dev/archivo/"
+
+      - name: Rechazado (PR cerrado sin fusionar)
+        if: ${{ github.event.pull_request.merged == false }}
+        run: |
+          gh issue edit "${{ steps.issue.outputs.number }}" --remove-label "pr-abierto" --add-label "necesita-cambios" 2>/dev/null || true
+          gh issue comment "${{ steps.issue.outputs.number }}" --body "Este Pull Request se cerró sin fusionarse, así que no se ha aplicado el cambio. Si quieres proponerlo de nuevo, edita este issue con los cambios necesarios y se generará un nuevo PR."
