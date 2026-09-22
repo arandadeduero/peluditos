@@ -1,0 +1,61 @@
+CNAME
+  s_c49c567ee1322d::t_80af9fd0468692 1
+data/archive/index.json
+  s_c49c567ee1322d::t_9e47906e6197cd 1
+app.js
+  s_c49c567ee1322d::t_a732cfc0ea4ccf 67
+  s_c49c567ee1322d::t_fe6bfbe61f1253 91
+  s_c49c567ee1322d::t_ef69a7af60ed01 285
+styles.css
+  s_c49c567ee1322d::t_205cfc479daa80 1,3
+  s_c49c567ee1322d::t_d05ea9946e13e6 523-565
+data/posts.json
+  s_c49c567ee1322d::t_cc2cfadc63fe3a 3-12
+archivo/index.html
+  s_c49c567ee1322d::t_37ae12e6d8c1cb 8-9,14-16,22-23
+  s_c49c567ee1322d::t_d76bcdedab0aa7 33,42-43
+  s_c49c567ee1322d::t_46361cb084a589 93-103,106
+  s_c49c567ee1322d::t_7000b26ae04e12 83-84,89
+.github/workflows/deploy-pages.yml
+  s_c49c567ee1322d::t_f4d6e978fcc651 5
+README.md
+  s_c49c567ee1322d::t_9a2691033c2a7f 4-5,7,42,46,81,90,102-103,105,111-117
+  s_c49c567ee1322d::t_f95d76b4a7a03f 41
+  s_c49c567ee1322d::t_7e51d6a8ed1816 106-109
+protectoras/index.html
+  s_c49c567ee1322d::t_a5ca99e39b3a4f 8-9,14-16,22-23
+  s_c49c567ee1322d::t_7517d6e142fce2 33,42-43
+  s_c49c567ee1322d::t_93fde45a3bbdcf 67-77,79
+  s_c49c567ee1322d::t_8acc0106cc2bc5 57-58,63
+  s_c49c567ee1322d::t_fa4aec9822b8cf 50
+shelters.json
+  s_c49c567ee1322d::t_a6adb77fe140d0 3-8,11,17-22,24,28
+index.html
+  s_c49c567ee1322d::t_132e8b92898188 6-8,12-15,20-22
+  s_c49c567ee1322d::t_b8aab2d8979b1c 32,41-42
+  s_c49c567ee1322d::t_cee9d5ed0bf574 89-90,95
+  s_c49c567ee1322d::t_407ad50f275761 99-109,112
+  s_c49c567ee1322d::t_366ecb2375ebf9 53
+.github/workflows/update.yml
+  s_c49c567ee1322d::t_7086131f0cdba5 18
+  s_c49c567ee1322d::t_3c6996feb60f1e 72
+  s_c49c567ee1322d::t_7800da617fc55c 54
+analytics.js
+  s_c49c567ee1322d::t_8add6e8e34d828 1-70
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "82a185ed731af4d3d34e2c0f79d6f673a617996c",
+  "prompts": {},
+  "sessions": {
+    "s_c49c567ee1322d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dc90a599-8ca3-45fb-a819-2e685910cc22",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Guillermo López <willyaranda@gmail.com>"
+    }
+  }
+}
