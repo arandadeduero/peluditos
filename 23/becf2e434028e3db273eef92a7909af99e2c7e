@@ -1,0 +1,23 @@
+index.html
+  s_c49c567ee1322d::t_6c57aba494604c 27
+archivo/index.html
+  s_c49c567ee1322d::t_8849c29678ebef 28
+protectoras/index.html
+  s_c49c567ee1322d::t_64ff51110010f2 28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "23becf2e434028e3db273eef92a7909af99e2c7e",
+  "prompts": {},
+  "sessions": {
+    "s_c49c567ee1322d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dc90a599-8ca3-45fb-a819-2e685910cc22",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Guillermo López <willyaranda@gmail.com>"
+    }
+  }
+}
