@@ -15,21 +15,5 @@
     "type": "gato",
     "tipo": "adopcion",
     "source": "issue"
-  },
-  {
-    "id": "ejemplo-001",
-    "shelter": "Huellaranda",
-    "shelterUrl": "https://www.instagram.com/huellaranda/",
-    "zone": "Aranda de Duero",
-    "date": "2026-09-22T09:00:00.000Z",
-    "caption": "Esta es una ficha de ejemplo. Aquí aparecerán las publicaciones reales de las protectoras de Aranda de Duero en cuanto se active la sincronización automática con sus cuentas de Instagram.",
-    "excerpt": "Esta es una ficha de ejemplo. Aquí aparecerán las publicaciones reales de las protectoras de Aranda de Duero en cuanto se active la sincronización automática con sus cuentas de Instagram.",
-    "image": "img/placeholder.svg",
-    "images": [
-      "img/placeholder.svg"
-    ],
-    "permalink": "https://www.instagram.com/huellaranda/",
-    "type": "otro",
-    "tipo": "otro"
   }
 ]
