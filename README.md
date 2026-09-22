@@ -61,7 +61,8 @@ shelters.json ─┐
    categorías. Cambiar de IA = editar solo `classifyWithAI`. Modelo en `GEMINI_MODEL`
    (`gemini-2.5-flash-lite`).
 4. **Secrets** (repo → *Settings → Secrets and variables → Actions*): `IG_API_TOKEN` y
-   `GEMINI_API_KEY`.
+   `GEMINI_API_KEY`. Opcional: `IG_API_TOKEN_2`, una 2ª cuenta Apify a la que el fetch hace
+   failover si la 1ª agota su crédito gratuito.
 5. **Pages** (*Settings → Pages*): **Source = GitHub Actions** (no "Deploy from a branch").
    El despliegue lo hacen los workflows. Dominio propio vía fichero [`CNAME`](CNAME).
 6. **Contacto:** cada protectora gestiona sus adopciones; el sitio enlaza a la publicación
@@ -93,7 +94,7 @@ python3 -m http.server                                        # sirve el sitio e
 
 - `INGEST_MAX_DAYS` (2): solo se ingieren posts de los últimos N días (no backfill de días viejos).
 - `CURRENT_DAYS` (122): ventana de la portada; lo anterior va al archivo por años.
-- `POSTS_PER_ACCOUNT` (6): cuántos posts recientes se piden por cuenta y ejecución.
+- `POSTS_PER_ACCOUNT` (25): cuántos posts recientes se piden por cuenta y ejecución.
 - `CLASSIFY_FAST=1` (env, lo pone el workflow): sin la pausa de 7s (para clave de pago).
 
 ## Notas
