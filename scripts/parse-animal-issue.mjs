@@ -49,11 +49,18 @@ export function parseIssueBody(body) {
   return fields;
 }
 
-// Solo confiamos en imágenes servidas por los propios CDN de adjuntos de GitHub.
-const IMG_RE = /!\[[^\]]*\]\((https:\/\/(?:github\.com\/user-attachments\/assets\/[a-zA-Z0-9-]+|[a-zA-Z0-9.-]*\.githubusercontent\.com\/[^\s)]+))\)/g;
+// Solo confiamos en imágenes servidas por los propios CDN de adjuntos de GitHub. Según el
+// cliente (arrastrar, pegar, móvil...) el issue las vuelca como Markdown "![]()" o como
+// "<img src=...>" HTML (con width/height/alt en cualquier orden) — hay que detectar ambas.
+const DOMAIN = '(?:github\\.com\\/user-attachments\\/assets\\/[a-zA-Z0-9-]+|[a-zA-Z0-9.-]*\\.githubusercontent\\.com\\/[^\\s)"\'<>]+)';
+const MD_IMG_RE = new RegExp(`!\\[[^\\]]*\\]\\((https:\\/\\/${DOMAIN})\\)`, 'g');
+const HTML_IMG_RE = new RegExp(`<img\\b[^>]*\\bsrc=["'](https:\\/\\/${DOMAIN})["'][^>]*>`, 'gi');
 
 export function extractImages(body) {
-  return [...(body || '').matchAll(IMG_RE)].map((m) => m[1]);
+  const text = body || '';
+  const md = [...text.matchAll(MD_IMG_RE)].map((m) => m[1]);
+  const html = [...text.matchAll(HTML_IMG_RE)].map((m) => m[1]);
+  return [...new Set([...md, ...html])];
 }
 
 function isHttpUrl(s) {
@@ -195,8 +202,18 @@ function selfTest() {
   assert(fields['Nombre del animal (opcional)'] === '', 'parseIssueBody: "_No response_" -> ""');
   assert(fields['Descripción'] === 'Muy bueno con niños.', 'parseIssueBody: descripcion');
 
-  assert(extractImages(body).length === 1, 'extractImages: detecta 1 imagen de attachments de GitHub');
+  assert(extractImages(body).length === 1, 'extractImages: detecta 1 imagen de attachments de GitHub (Markdown)');
   assert(extractImages('![x](https://evil.example.com/a.jpg)').length === 0, 'extractImages: ignora dominios no confiables');
+
+  // Formato real que usa GitHub cuando se arrastra/pega una imagen: <img> HTML, no Markdown.
+  const htmlImgBody =
+    '<img width="3072" height="4080" alt="Image" src="https://github.com/user-attachments/assets/b2d63c7a-86e0-4bfc-a542-b9cbedcc2209" />';
+  assert(extractImages(htmlImgBody).length === 1, 'extractImages: detecta 1 imagen en formato <img> HTML');
+  assert(
+    extractImages(htmlImgBody)[0] === 'https://github.com/user-attachments/assets/b2d63c7a-86e0-4bfc-a542-b9cbedcc2209',
+    'extractImages: extrae la URL correcta del <img> HTML'
+  );
+  assert(extractImages('<img src="https://evil.example.com/a.jpg">').length === 0, 'extractImages: <img> ignora dominios no confiables');
 
   const shelters = [{ name: 'Huellaranda', instagramUrl: 'https://instagram.com/huellaranda', zone: 'Aranda de Duero' }];
   const v = validate(fields, body, shelters);
