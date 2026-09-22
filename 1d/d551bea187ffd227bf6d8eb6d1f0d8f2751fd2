@@ -1,0 +1,39 @@
+scripts/parse-archive-issue.mjs
+  s_c49c567ee1322d::t_637a55db27d47c 1-19,21-123
+  s_c49c567ee1322d::t_393e03a3cbf40b 20
+scripts/lib.mjs
+  s_c49c567ee1322d::t_4a6e099356221a 14-42
+shelters.json
+  s_c49c567ee1322d::t_59d69419eb8a3a 10
+README.md
+  s_c49c567ee1322d::t_dd509ad8cf7e41 52,64-70
+  s_c49c567ee1322d::t_44c38583a93e03 83,87-88
+  s_c49c567ee1322d::t_160c48c2b1f1e0 71
+scripts/fetch.mjs
+  s_c49c567ee1322d::t_a64ea46db3471b 307-312
+scripts/parse-animal-issue.mjs
+  s_c49c567ee1322d::t_9651b1d3e382d6 21
+  s_c49c567ee1322d::t_7c06e28bd37e01 38
+.github/ISSUE_TEMPLATE/archivar-animal.yml
+  s_c49c567ee1322d::t_9def647fa75425 1-41
+.github/workflows/archive-issue.yml
+  s_c49c567ee1322d::t_a2760171df6482 1-114
+.github/workflows/issue-flow-closed.yml
+  s_c49c567ee1322d::t_b6d1d289c789de 1-52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1dd551bea187ffd227bf6d8eb6d1f0d8f2751fd2",
+  "prompts": {},
+  "sessions": {
+    "s_c49c567ee1322d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dc90a599-8ca3-45fb-a819-2e685910cc22",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Guillermo López <willyaranda@gmail.com>"
+    }
+  }
+}
