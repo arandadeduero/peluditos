@@ -1,0 +1,118 @@
+name: Nuevo animal desde issue
+
+# Valida los issues abiertos con la plantilla "🐾 Nuevo animal" (label nuevo-animal) y, si los
+# datos son correctos, genera la ficha (descarga la foto, actualiza data/posts.json) en una
+# rama nueva y abre un Pull Request para revisión manual. No publica nada directamente: solo
+# fusionar el PR a mano despliega el cambio.
+#
+# El cuerpo del issue es texto NO confiable (lo escribe cualquiera con acceso al repo). Por eso
+# se pasa siempre por `env:` a scripts/parse-animal-issue.mjs — nunca se interpola en `run:` —
+# así el shell jamás lo evalúa como comandos.
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: animal-issue-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    if: contains(github.event.issue.labels.*.name, 'nuevo-animal')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: aranda
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      - name: Validar y generar ficha
+        id: parse
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_CREATED_AT: ${{ github.event.issue.created_at }}
+        run: |
+          result="$(node scripts/parse-animal-issue.mjs)"
+          echo "$result"
+          {
+            echo "result<<EOF_PARSE_RESULT"
+            echo "$result"
+            echo "EOF_PARSE_RESULT"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Comentar validación fallida
+        if: ${{ !fromJSON(steps.parse.outputs.result).ok }}
+        env:
+          RESULT: ${{ steps.parse.outputs.result }}
+        run: |
+          node -e '
+            const r = JSON.parse(process.env.RESULT);
+            const lines = [
+              "Este issue tiene datos por corregir antes de poder publicarse:",
+              "",
+              ...r.errors.map((e) => "- " + e),
+              "",
+              "Edita el issue con los cambios y se volverá a comprobar automáticamente.",
+            ];
+            console.log(lines.join("\n"));
+          ' > /tmp/comment.md
+          gh issue comment "${{ github.event.issue.number }}" --body-file /tmp/comment.md
+          gh issue edit "${{ github.event.issue.number }}" --add-label "necesita-cambios" --remove-label "validado" 2>/dev/null || true
+
+      - name: Comprobar si ya hay un PR abierto para este issue
+        id: existing_pr
+        if: ${{ fromJSON(steps.parse.outputs.result).ok }}
+        run: |
+          url=$(gh pr list --head "animal-issue-${{ github.event.issue.number }}" --state open --json url --jq '.[0].url // empty')
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Crear rama, commit y Pull Request
+        if: ${{ fromJSON(steps.parse.outputs.result).ok && steps.existing_pr.outputs.url == '' }}
+        env:
+          RESULT: ${{ steps.parse.outputs.result }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          POST_ID=$(node -e 'console.log(JSON.parse(process.env.RESULT).postId)')
+          CLEAN_TITLE=$(node -e 'console.log((process.env.ISSUE_TITLE || "").replace(/^\[Animal\]\s*/, "").trim())')
+          BRANCH="animal-issue-${ISSUE_NUMBER}"
+
+          git config user.name "peluditos-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add data/posts.json "img/${POST_ID}.jpg"
+          git commit -m "Nueva ficha desde issue #${ISSUE_NUMBER}"
+          git push -u origin "$BRANCH" --force
+
+          {
+            echo "Ficha generada automáticamente a partir del issue #${ISSUE_NUMBER}${CLEAN_TITLE:+: $CLEAN_TITLE}."
+            echo ""
+            echo "Revisa que la foto y los datos sean correctos antes de fusionar. Al fusionar este PR se publicará la ficha en la web y el issue se cerrará solo."
+            echo ""
+            echo "Closes #${ISSUE_NUMBER}"
+          } > /tmp/pr-body.md
+          gh pr create --base aranda --head "$BRANCH" --title "Nueva ficha: issue #${ISSUE_NUMBER}" --body-file /tmp/pr-body.md
+          gh issue edit "$ISSUE_NUMBER" --add-label "validado" --add-label "pr-abierto" --remove-label "necesita-cambios" 2>/dev/null || true
+
+      - name: Avisar del PR creado
+        if: ${{ fromJSON(steps.parse.outputs.result).ok && steps.existing_pr.outputs.url == '' }}
+        run: |
+          pr_url=$(gh pr list --head "animal-issue-${{ github.event.issue.number }}" --state open --json url --jq '.[0].url')
+          gh issue comment "${{ github.event.issue.number }}" --body "✅ Datos validados. Se ha abierto ${pr_url} — cuando se revise y fusione, la ficha se publicará y este issue se cerrará solo."
+
+      - name: Avisar de que ya hay un PR abierto
+        if: ${{ fromJSON(steps.parse.outputs.result).ok && steps.existing_pr.outputs.url != '' }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --body "Ya hay un Pull Request abierto para este issue: ${{ steps.existing_pr.outputs.url }}. Si has cambiado algo importante, pide a quien lo vaya a revisar que actualice el PR a mano, o ciérralo y vuelve a editar este issue para generar uno nuevo."

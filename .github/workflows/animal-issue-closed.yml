@@ -1,0 +1,38 @@
+name: Cerrar ficha de animal tras el PR
+
+# El PR de una ficha de animal (rama animal-issue-<n>, creada por animal-issue.yml) lleva
+# "Closes #<n>" en su descripción, así que GitHub cierra el issue solo al fusionar — esto solo
+# añade el aviso/etiqueta final en ambos casos: publicado (fusionado) o rechazado (cerrado sin
+# fusionar).
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  issues: write
+
+jobs:
+  wrap-up:
+    if: startsWith(github.event.pull_request.head.ref, 'animal-issue-')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Extraer número de issue de la rama
+        id: issue
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: echo "number=${HEAD_REF#animal-issue-}" >> "$GITHUB_OUTPUT"
+
+      - name: Publicado (PR fusionado)
+        if: ${{ github.event.pull_request.merged == true }}
+        run: |
+          gh issue edit "${{ steps.issue.outputs.number }}" --add-label "publicado" --remove-label "pr-abierto" 2>/dev/null || true
+          gh issue comment "${{ steps.issue.outputs.number }}" --body "🎉 ¡Publicado! Ya puedes verlo en https://peluditos.arandadeduero.dev/#post-issue-${{ steps.issue.outputs.number }}"
+
+      - name: Rechazado (PR cerrado sin fusionar)
+        if: ${{ github.event.pull_request.merged == false }}
+        run: |
+          gh issue edit "${{ steps.issue.outputs.number }}" --remove-label "pr-abierto" --add-label "necesita-cambios" 2>/dev/null || true
+          gh issue comment "${{ steps.issue.outputs.number }}" --body "Este Pull Request se cerró sin fusionarse, así que la ficha no se ha publicado. Si quieres proponerla de nuevo, edita este issue con los cambios necesarios y se generará un nuevo PR."

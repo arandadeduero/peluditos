@@ -21,6 +21,10 @@ const escapeHtml = (s) =>
 
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '#');
 
+// La mayoría de fichas enlazan a Instagram, pero las creadas desde un issue de GitHub
+// (ver .github/workflows/animal-issue.yml) enlazan al propio issue o a otra web si no hay post.
+const ctaLabel = (permalink) => (/instagram\.com/i.test(permalink || '') ? 'Ver en Instagram →' : 'Ver más →');
+
 const fmtDay = (iso) => {
   const s = new Date(iso).toLocaleDateString('es-ES', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid',
@@ -88,7 +92,7 @@ function card(p) {
       </div>
       <p class="card__text"><span class="card__caption">${escapeHtml(short)}</span>${hasMore ? ` <button type="button" class="card__more" aria-expanded="false">más</button>` : ''}</p>
       <div class="card__meta">
-        <a class="card__cta" href="${href}" target="_blank" rel="noopener">Ver en Instagram →</a>
+        <a class="card__cta" href="${href}" target="_blank" rel="noopener">${ctaLabel(p.permalink)}</a>
         <button type="button" class="card__share" aria-label="Copiar enlace a esta ficha" title="Copiar enlace a esta ficha">🔗</button>
       </div>
     </div>`;

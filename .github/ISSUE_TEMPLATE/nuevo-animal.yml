@@ -1,0 +1,85 @@
+name: "🐾 Nuevo animal"
+description: Propón una ficha (adopción, acogida, perdido, donación o evento) para publicarla en Peluditos.
+title: "[Animal] "
+labels: ["nuevo-animal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Un workflow automático validará estos datos. Si todo está correcto, abrirá un Pull
+        Request con la ficha lista para revisión manual antes de publicarse en la web.
+        Si falta o falla algo, se comentará aquí mismo qué corregir — solo tienes que editar
+        este issue y se revalidará solo.
+
+  - type: dropdown
+    id: protectora
+    attributes:
+      label: Protectora
+      description: ¿Qué protectora gestiona este animal?
+      options:
+        - Huellaranda
+        - FeliniSave
+    validations:
+      required: true
+
+  - type: input
+    id: nombre
+    attributes:
+      label: Nombre del animal (opcional)
+      placeholder: "Ej: Thor"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: animal
+    attributes:
+      label: Tipo de animal
+      options:
+        - Perro
+        - Gato
+        - Otro
+    validations:
+      required: true
+
+  - type: dropdown
+    id: categoria
+    attributes:
+      label: Categoría de la publicación
+      options:
+        - Adopción
+        - Acogida
+        - Perdido
+        - Donación
+        - Evento
+        - Otra
+    validations:
+      required: true
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción
+      description: Historia, carácter, ubicación, cómo contactar para adoptar/acoger...
+      placeholder: "Ej: Perro tranquilo, buen carácter con niños, castrado y desparasitado..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: imagen
+    attributes:
+      label: Foto
+      description: >-
+        Haz clic aquí dentro y arrastra (o pega) UNA sola foto del animal.
+        No subas más fotos en ningún otro campo del formulario: si detectamos más de una, el
+        sistema te pedirá que dejes solo una.
+    validations:
+      required: true
+
+  - type: input
+    id: enlace
+    attributes:
+      label: Enlace relacionado (opcional)
+      description: Publicación de Instagram, ficha en la web de la protectora, etc. Si lo dejas vacío, la ficha enlazará a este issue.
+      placeholder: "https://..."
+    validations:
+      required: false

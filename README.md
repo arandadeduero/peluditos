@@ -31,6 +31,36 @@ shelters.json ─┐
 - **Archivo** (`/archivo/`): lo que supera los ~4 meses, por años.
 - **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público.
 
+### Fichas propuestas por issue (GitHub Issues → PR → publicación)
+
+Cualquiera con acceso al repo puede proponer una ficha (adopción, acogida, perdido, donación o
+evento) sin tocar código, abriendo un issue con la plantilla **🐾 Nuevo animal**:
+
+```
+Issue "🐾 Nuevo animal" ─┐
+  (protectora, tipo,     ├─ animal-issue.yml          (al abrir/editar el issue)
+   categoría, texto,     │     1. valida    → protectora conocida, campos obligatorios,
+   1 foto, enlace op.)   │                    EXACTAMENTE una foto adjunta
+                         │     2. si falla   → comenta qué falta y etiqueta necesita-cambios
+                         │                    (se revalida solo al editar el issue)
+                         │     3. si vale    → descarga la foto a img/issue-<n>.jpg, añade la
+                         │                    ficha a data/posts.json en una rama nueva y abre
+                         │                    un Pull Request (label pr-abierto)
+                         └─ el PR NO se fusiona solo: hace falta revisión y aprobación manual
+
+PR fusionado (manual) ─┐
+                        ├─ animal-issue-closed.yml
+                        │     el propio PR cierra el issue (lleva "Closes #<n>"); este workflow
+                        │     solo añade el aviso final: publicado (si se fusionó) o
+                        │     necesita-cambios (si se cerró sin fusionar, para reintentarlo)
+                        └─ deploy-pages.yml despliega igual que con cualquier otro push a aranda
+```
+
+Solo se admite **una** foto por issue (si detecta más de una, pide dejar solo una). La
+protectora debe coincidir exactamente con un `name` de [`shelters.json`](shelters.json); añadir
+una protectora nueva a esa lista implica también añadir su opción en la plantilla
+[`nuevo-animal.yml`](.github/ISSUE_TEMPLATE/nuevo-animal.yml).
+
 ## Estructura
 
 | Ruta | Qué es |
@@ -41,10 +71,12 @@ shelters.json ─┐
 | `analytics.js` | Google Analytics 4 con consentimiento explícito (banner «Aceptar»/«Denegar»). |
 | `scripts/fetch.mjs` | Pipeline de Instagram (fetch + clasificación + partición + poda). |
 | `scripts/lib.mjs` | Utilidades del pipeline (`excerpt`, clasificación Gemini). |
+| `scripts/parse-animal-issue.mjs` | Valida un issue "Nuevo animal" y genera su ficha (ver abajo). |
 | `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto. |
 | `data/posts.json` · `data/archive/*.json` | Datos generados (portada / archivo). |
-| `img/` | Imágenes de posts (`<shortcode>.jpg`) + assets (`logo-web.jpg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
-| `.github/workflows/` | `update.yml` (cron Instagram + clasificación) y `deploy-pages.yml` (despliega en cada push). |
+| `img/` | Imágenes de posts (`<shortcode>.jpg`, `issue-<n>.jpg`) + assets (`logo-web.jpg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
+| `.github/ISSUE_TEMPLATE/nuevo-animal.yml` | Formulario para proponer una ficha desde un issue. |
+| `.github/workflows/` | `update.yml` (cron Instagram + clasificación), `deploy-pages.yml` (despliega en cada push), `animal-issue.yml` + `animal-issue-closed.yml` (fichas propuestas por issue). |
 
 ## Puesta en marcha
 
