@@ -1,0 +1,19 @@
+[
+  {
+    "id": "colonia-ejemplo-01",
+    "nombre": "Colonia de ejemplo",
+    "zona": "Centro",
+    "lat": 41.6708,
+    "lng": -3.6892,
+    "numGatos": 6,
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "2026-01-01",
+    "descripcion": "Esta es una colonia de ejemplo. Aquí aparecerán las colonias felinas reales gestionadas por el Ayuntamiento de Aranda de Duero en cuanto se incorporen sus datos.",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    }
+  }
+]

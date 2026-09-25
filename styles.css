@@ -185,6 +185,49 @@ a { color: var(--brand-600); }
   transition: background .2s, transform .2s;
 }
 .hero__cta:hover { background: var(--brand-600); transform: translateY(-1px); }
+
+/* ===== Tarjetas de estadísticas (portada) ===== */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .35rem;
+  padding: 1.4rem 1.3rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.stat-card__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 1.15rem;
+  margin-bottom: .3rem;
+}
+.stat-card__icon--paw { background: #fde8e0; }
+.stat-card__icon--pin { background: #ece5fb; }
+.stat-card__icon--heart { background: #e3f6ee; }
+.stat-card__icon--people { background: #fde9d0; }
+.stat-card__number {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--ink);
+}
+.stat-card__label { font-weight: 700; color: var(--ink); font-size: .95rem; }
+.stat-card__sub { color: var(--slate-500); font-size: .82rem; }
+
 /* velo suave para legibilidad del texto sobre la foto en pantallas estrechas */
 @media (max-width: 767px) {
   /* Menú hamburguesa */
@@ -470,6 +513,76 @@ main.container { padding-bottom: 3rem; }
   margin: 2.25rem 0 .4rem;
 }
 .page-lead { margin: 0 0 1.75rem; color: var(--slate-600); max-width: 60ch; }
+.municipal-service {
+  margin: 0 0 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--brand-500);
+  border-radius: var(--radius-card);
+  background: var(--brand-50);
+}
+.municipal-service__title {
+  margin: 0 0 .6rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--brand-800);
+}
+.municipal-service p { margin: .5rem 0; color: var(--slate-700); font-size: .92rem; line-height: 1.6; max-width: 68ch; }
+.municipal-service__data {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .3rem 1rem;
+  margin: 1rem 0;
+  font-size: .92rem;
+}
+.municipal-service__data dt { font-weight: 700; color: var(--ink); }
+.municipal-service__data dd { margin: 0; color: var(--slate-700); }
+.municipal-service__data a { color: var(--brand-600); text-decoration: underline; }
+.municipal-service__pending {
+  margin-top: 1rem;
+  padding: .6rem .9rem;
+  border-radius: .6rem;
+  background: #fff8e6;
+  color: #7a5b00;
+  font-size: .82rem;
+  font-weight: 600;
+  max-width: none;
+}
+
+/* ===== Mapa de colonias felinas ===== */
+.colonias-map {
+  height: 26rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+@media (min-width: 768px) { .colonias-map { height: 32rem; } }
+.colonias-list {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: .85rem;
+}
+.colonias-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  padding: .9rem 1.1rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: .9rem;
+  font-size: .88rem;
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+.colonias-list__item:hover,
+.colonias-list__item:focus-visible { border-color: var(--brand-400); box-shadow: var(--shadow-card); outline: none; }
+.colonias-list__item strong { color: var(--ink); font-size: .95rem; }
+.colonias-list__zone { color: var(--slate-500); }
 .shelters {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

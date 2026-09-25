@@ -4,30 +4,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="../">
-  <title>Archivo — Peluditos</title>
-  <meta name="description" content="Archivo por años de las publicaciones de las protectoras y asociaciones de animales de Aranda de Duero.">
-  <link rel="canonical" href="https://peluditos.arandadeduero.dev/archivo/">
+  <title>Mapa de colonias felinas — Peluditos</title>
+  <meta name="description" content="Mapa de las colonias felinas gestionadas por el Ayuntamiento de Aranda de Duero.">
+  <link rel="canonical" href="https://peluditos.arandadeduero.dev/mapa-colonias/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Peluditos">
   <meta property="og:locale" content="es_ES">
-  <meta property="og:title" content="Archivo — Peluditos">
-  <meta property="og:description" content="Archivo por años de las publicaciones de las protectoras y asociaciones de animales de Aranda de Duero.">
-  <meta property="og:url" content="https://peluditos.arandadeduero.dev/archivo/">
+  <meta property="og:title" content="Mapa de colonias felinas — Peluditos">
+  <meta property="og:description" content="Mapa de las colonias felinas gestionadas por el Ayuntamiento de Aranda de Duero.">
+  <meta property="og:url" content="https://peluditos.arandadeduero.dev/mapa-colonias/">
   <meta property="og:image" content="https://peluditos.arandadeduero.dev/img/og.jpg?v=3">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Un cachorro y un gatito jugando juntos">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Archivo — Peluditos">
-  <meta name="twitter:description" content="Archivo por años de las publicaciones de las protectoras de Aranda de Duero.">
+  <meta name="twitter:title" content="Mapa de colonias felinas — Peluditos">
+  <meta name="twitter:description" content="Mapa de las colonias felinas gestionadas por el Ayuntamiento de Aranda de Duero.">
   <meta name="twitter:image" content="https://peluditos.arandadeduero.dev/img/og.jpg?v=3">
   <link rel="icon" href="img/logo-web.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles.css?v=4">
 </head>
-<body data-source="archive">
+<body>
   <header class="topbar">
     <div class="container topbar__inner">
       <a class="brand" href="./">
@@ -40,46 +41,26 @@
       <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainnav">☰</button>
       <nav class="mainnav" id="mainnav" aria-label="Menú principal">
         <a href="./">Inicio</a>
-        <a href="archivo/" class="is-active">Archivo</a>
+        <a href="archivo/">Archivo</a>
         <a href="protectoras/">Protectoras y Asociaciones</a>
-        <a href="mapa-colonias/">Mapa de colonias</a>
+        <a href="mapa-colonias/" class="is-active">Mapa de colonias</a>
         <a href="https://www.instagram.com/ayuntamientoarandadeduero" target="_blank" rel="noopener">Instagram</a>
         <a href="https://www.facebook.com/aytoarandadeduero" target="_blank" rel="noopener">Facebook</a>
       </nav>
     </div>
   </header>
 
-  <div class="container">
-    <h1 class="page-title">Archivo</h1>
-    <p class="page-lead">Publicaciones de más de 4 meses, agrupadas por año.</p>
-  </div>
-
-  <nav class="filters">
-    <div class="filters__types" role="group" aria-label="Filtrar por tipo de animal">
-      <button data-type="todos" class="is-active">Todos</button>
-      <button data-type="perro">🐶 Perros</button>
-      <button data-type="gato">🐱 Gatos</button>
-      <button data-type="otro">🐾 Otros</button>
-    </div>
-    <div class="filters__cats" role="group" aria-label="Filtrar por categoría de publicación">
-      <button data-cat="todas" class="is-active">Todas</button>
-      <button data-cat="adopcion">🏠 Adopciones</button>
-      <button data-cat="acogida">🤝 Acogidas</button>
-      <button data-cat="perdido">🔍 Perdidos</button>
-      <button data-cat="donacion">💚 Donaciones</button>
-      <button data-cat="evento">📅 Eventos</button>
-      <button data-cat="otro">✨ Otras</button>
-    </div>
-    <label class="filters__shelter">
-      Protectora:
-      <select id="shelter"><option value="todas">Todas</option></select>
-    </label>
-  </nav>
-
   <main class="container">
-    <div id="grid"></div>
-    <p id="empty" class="empty" hidden>Todavía no hay nada en el archivo. Las publicaciones pasan aquí al superar los 4 meses.</p>
-    <nav id="pager" class="pager" aria-label="Paginación" hidden></nav>
+    <h1 class="page-title">Mapa de colonias felinas</h1>
+    <p class="page-lead">Colonias felinas gestionadas por el Ayuntamiento de Aranda de Duero, controladas
+       mediante el programa CER-M (captura, esterilización, retorno y monitorización). Los datos son
+       orientativos: para incidencias o información de una colonia concreta, contacta con la protectora
+       responsable.</p>
+
+    <div id="colonias-map" class="colonias-map" role="application" aria-label="Mapa de colonias felinas"></div>
+    <p id="colonias-empty" class="empty" hidden>Todavía no hay colonias registradas.</p>
+
+    <ul id="colonias-list" class="colonias-list" aria-label="Listado de colonias felinas"></ul>
   </main>
 
   <footer class="site-footer">
@@ -90,7 +71,8 @@
          a través de su publicación en Instagram. Las imágenes y textos pertenecen a cada protectora
          y enlazamos siempre a la publicación original.</p>
       <p class="fineprint">Licencia contenido <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>
-         · <a href="https://github.com/arandadeduero/peluditos" target="_blank" rel="noopener">Código GitHub</a></p>
+         · <a href="https://github.com/arandadeduero/peluditos" target="_blank" rel="noopener">Código GitHub</a>
+         · Mapa © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a></p>
     </div>
   </footer>
 
@@ -105,8 +87,9 @@
     </div>
   </div>
 
-  <script src="app.js?v=1" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="nav.js?v=1" defer></script>
   <script src="analytics.js?v=1" defer></script>
+  <script src="colonias-map.js?v=1" defer></script>
 </body>
 </html>

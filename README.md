@@ -27,9 +27,19 @@ shelters.json ─┐
 - **Portada** (`/`): tarjetas de las **últimas 2 semanas** (con botón «Mostrar más» que revela
   2 semanas más cada vez), agrupadas por día (hora de Madrid), con filtros por **animal**
   (perro/gato/otro) y **categoría** (adopción/acogida/perdido/donación/evento/otro) y por
-  protectora. Cada publicación tiene su ancla `#post-<id>` (enlace directo compartible).
+  protectora. Cada publicación tiene su ancla `#post-<id>` (enlace directo compartible). Debajo
+  del hero, 4 tarjetas de estadísticas del programa de colonias felinas (de momento con cifras
+  de ejemplo, editar directamente en `index.html`).
 - **Archivo** (`/archivo/`): lo que supera los ~4 meses, por años.
-- **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público.
+- **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público, más un
+  apartado sobre el servicio municipal de recogida de animales (el pliego del contrato exige dar
+  publicidad a los animales bajo custodia del adjudicatario; datos de contacto de ejemplo,
+  pendientes de confirmar — editar directamente en `protectoras/index.html`).
+- **Mapa de colonias** (`/mapa-colonias/`): mapa ([Leaflet](https://leafletjs.com/) + teselas de
+  OpenStreetMap, sin API key) de las colonias felinas gestionadas por el Ayuntamiento, con lista
+  accesible debajo sincronizada con el mapa. Datos en [`data/colonias.json`](data/colonias.json)
+  (un array de objetos `{id, nombre, zona, lat, lng, numGatos, gestionadaPor, programa, estado,
+  fechaAlta, descripcion, contacto}`); de momento solo hay una colonia de ejemplo.
 
 ### Fichas propuestas por issue (GitHub Issues → PR → publicación)
 
@@ -73,16 +83,18 @@ revisión manual → `issue-flow-closed.yml` que el alta.
 
 | Ruta | Qué es |
 |---|---|
-| `index.html`, `archivo/`, `protectoras/` | Las tres páginas (comparten `styles.css` y `app.js`). |
+| `index.html`, `archivo/`, `protectoras/`, `mapa-colonias/` | Las cuatro páginas (comparten `styles.css`). |
 | `app.js` | Render de tarjetas + filtros + «Mostrar más» + anclas (portada y archivo). |
 | `nav.js` | Menú hamburguesa en móvil. |
 | `analytics.js` | Google Analytics 4 con consentimiento explícito (banner «Aceptar»/«Denegar»). |
+| `colonias-map.js` | Mapa de colonias felinas (Leaflet + OpenStreetMap) en `/mapa-colonias/`. |
 | `scripts/fetch.mjs` | Pipeline de Instagram (fetch + clasificación + partición + poda). |
 | `scripts/lib.mjs` | Utilidades del pipeline (`excerpt`, clasificación Gemini). |
 | `scripts/parse-animal-issue.mjs` | Valida un issue "Nuevo animal" y genera su ficha (ver abajo). |
 | `scripts/parse-archive-issue.mjs` | Valida un issue "Archivar animal" y mueve la ficha al archivo. |
 | `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto. |
 | `data/posts.json` · `data/archive/*.json` | Datos generados (portada / archivo). |
+| `data/colonias.json` | Colonias felinas que pinta `/mapa-colonias/` (edición manual). |
 | `img/` | Imágenes de posts (`<shortcode>.jpg`, `issue-<n>.jpg`) + assets (`logo-web.jpg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
 | `.github/ISSUE_TEMPLATE/` | `nuevo-animal.yml` y `archivar-animal.yml`: formularios para proponer/retirar una ficha desde un issue. |
 | `.github/workflows/` | `update.yml` (cron Instagram + clasificación), `deploy-pages.yml` (despliega en cada push), `animal-issue.yml` + `archive-issue.yml` + `issue-flow-closed.yml` (fichas por issue). |
