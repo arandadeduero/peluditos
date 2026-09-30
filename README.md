@@ -24,27 +24,27 @@ shelters.json ─┐
                └─ commit + deploy (en la misma tanda) → GitHub Pages → navegador
 ```
 
-- **Portada** (`/`): justo debajo del hero, el apartado del **servicio municipal de recogida de
-  animales** — cómo avisar si se encuentra un animal en la calle (Policía Local de Aranda de
-  Duero, 947 51 26 46, 24 horas) y las fichas de los animales que están bajo custodia de ese
-  servicio (fotografía, fecha y lugar de recogida, situación). Datos en
-  [`data/animales-recogidos.json`](data/animales-recogidos.json) (un array de objetos `{id, foto,
-  fechaRecogida, lugarRecogida, situacion, descripcion}`); de momento solo hay una ficha de
-  ejemplo. Es un servicio exclusivamente municipal, sin relación con las protectoras/asociaciones
-  (esas tienen su propia página, ver más abajo). Después, tarjetas de las **últimas 2 semanas**
-  (con botón «Mostrar más» que revela 2 semanas más cada vez) de publicaciones de las protectoras,
-  agrupadas por día (hora de Madrid), con filtros por **animal** (perro/gato/otro) y **categoría**
-  (adopción/acogida/perdido/donación/evento/otro) y por protectora. Cada publicación tiene su
-  ancla `#post-<id>` (enlace directo compartible). Por último, 4 tarjetas de estadísticas del
-  programa de colonias felinas (de momento con cifras de ejemplo, editar directamente en
-  `index.html`).
-- **Archivo** (`/archivo/`): lo que supera los ~4 meses, por años.
+- **Portada** (`/`): el apartado del **servicio municipal de recogida de animales** — cómo avisar
+  si se encuentra un animal en la calle (Policía Local de Aranda de Duero, 947 51 26 46, 24 horas)
+  sobre fondo destacado, y debajo, ya sobre el fondo normal de la página y al final del todo, las
+  fichas de los animales que están bajo custodia de ese servicio (fotografía, fecha y lugar de
+  recogida, situación). Datos en [`data/animales-recogidos.json`](data/animales-recogidos.json)
+  (un array de objetos `{id, foto, fechaRecogida, lugarRecogida, situacion, descripcion}`); de
+  momento solo hay una ficha de ejemplo. Es un servicio exclusivamente municipal, sin relación con
+  las protectoras/asociaciones (esas tienen su propia página, ver más abajo).
+- **Archivo** (`/archivo/`): tarjetas de publicaciones de las protectoras (lo que supera los ~4
+  meses, por años), agrupadas por día, con filtros por **animal** (perro/gato/otro) y **categoría**
+  (adopción/acogida/perdido/donación/evento/otro) y por protectora. Cada publicación tiene su ancla
+  `#post-<id>` (enlace directo compartible).
 - **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público.
 - **Mapa de colonias** (`/mapa-colonias/`): mapa ([Leaflet](https://leafletjs.com/) + teselas de
   OpenStreetMap, sin API key) de las colonias felinas gestionadas por el Ayuntamiento, con lista
   accesible debajo sincronizada con el mapa. Datos en [`data/colonias.json`](data/colonias.json)
   (un array de objetos `{id, nombre, zona, lat, lng, numGatos, gestionadaPor, programa, estado,
   fechaAlta, descripcion, contacto}`); de momento solo hay una colonia de ejemplo.
+- **Info** (`/info/`): página estática con 4 tarjetas de estadísticas del programa de colonias
+  felinas (de momento con cifras de ejemplo, editar directamente en `info/index.html`). Pensada
+  para ampliarse con más información estática en el futuro.
 
 ### Fichas propuestas por issue (GitHub Issues → PR → publicación)
 
@@ -88,8 +88,8 @@ revisión manual → `issue-flow-closed.yml` que el alta.
 
 | Ruta | Qué es |
 |---|---|
-| `index.html`, `archivo/`, `protectoras/`, `mapa-colonias/` | Las cuatro páginas (comparten `styles.css`). |
-| `app.js` | Render de tarjetas + filtros + «Mostrar más» + anclas (portada y archivo). |
+| `index.html`, `archivo/`, `protectoras/`, `mapa-colonias/`, `info/` | Las cinco páginas (comparten `styles.css`). |
+| `app.js` | Render de tarjetas + filtros + «Mostrar más» + anclas (solo `/archivo/`). |
 | `nav.js` | Menú hamburguesa en móvil. |
 | `analytics.js` | Google Analytics 4 con consentimiento explícito (banner «Aceptar»/«Denegar»). |
 | `colonias-map.js` | Mapa de colonias felinas (Leaflet + OpenStreetMap) en `/mapa-colonias/`. |

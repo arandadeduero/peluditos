@@ -4,28 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="../">
-  <title>Mapa de colonias felinas — Peluditos</title>
-  <meta name="description" content="Mapa de las colonias felinas gestionadas por el Ayuntamiento de Aranda de Duero.">
-  <link rel="canonical" href="https://peluditos.arandadeduero.dev/mapa-colonias/">
+  <title>Información — Peluditos</title>
+  <meta name="description" content="Información sobre el programa de colonias felinas y otros datos del Ayuntamiento de Aranda de Duero.">
+  <link rel="canonical" href="https://peluditos.arandadeduero.dev/info/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Peluditos">
   <meta property="og:locale" content="es_ES">
-  <meta property="og:title" content="Mapa de colonias felinas — Peluditos">
-  <meta property="og:description" content="Mapa de las colonias felinas gestionadas por el Ayuntamiento de Aranda de Duero.">
-  <meta property="og:url" content="https://peluditos.arandadeduero.dev/mapa-colonias/">
+  <meta property="og:title" content="Información — Peluditos">
+  <meta property="og:description" content="Información sobre el programa de colonias felinas y otros datos del Ayuntamiento de Aranda de Duero.">
+  <meta property="og:url" content="https://peluditos.arandadeduero.dev/info/">
   <meta property="og:image" content="https://peluditos.arandadeduero.dev/img/og.jpg?v=3">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Un cachorro y un gatito jugando juntos">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Mapa de colonias felinas — Peluditos">
-  <meta name="twitter:description" content="Mapa de las colonias felinas gestionadas por el Ayuntamiento de Aranda de Duero.">
+  <meta name="twitter:title" content="Información — Peluditos">
+  <meta name="twitter:description" content="Información sobre el programa de colonias felinas y otros datos del Ayuntamiento de Aranda de Duero.">
   <meta name="twitter:image" content="https://peluditos.arandadeduero.dev/img/og.jpg?v=3">
   <link rel="icon" href="img/logo-web.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
@@ -43,8 +42,8 @@
         <a href="./">Inicio</a>
         <a href="archivo/">Archivo</a>
         <a href="protectoras/">Protectoras y Asociaciones</a>
-        <a href="mapa-colonias/" class="is-active">Mapa de colonias</a>
-        <a href="info/">Info</a>
+        <a href="mapa-colonias/">Mapa de colonias</a>
+        <a href="info/" class="is-active">Info</a>
         <a href="https://www.instagram.com/ayuntamientoarandadeduero" target="_blank" rel="noopener">Instagram</a>
         <a href="https://www.facebook.com/aytoarandadeduero" target="_blank" rel="noopener">Facebook</a>
       </nav>
@@ -52,16 +51,35 @@
   </header>
 
   <main class="container">
-    <h1 class="page-title">Mapa de colonias felinas</h1>
-    <p class="page-lead">Colonias felinas gestionadas por el Ayuntamiento de Aranda de Duero, controladas
-       mediante el programa CER-M (captura, esterilización, retorno y monitorización). Los datos son
-       orientativos: para incidencias o información de una colonia concreta, contacta con la protectora
-       responsable.</p>
+    <h1 class="page-title">Información</h1>
+    <p class="page-lead">Datos del programa municipal de colonias felinas de Aranda de Duero.</p>
 
-    <div id="colonias-map" class="colonias-map" role="application" aria-label="Mapa de colonias felinas"></div>
-    <p id="colonias-empty" class="empty" hidden>Todavía no hay colonias registradas.</p>
-
-    <ul id="colonias-list" class="colonias-list" aria-label="Listado de colonias felinas"></ul>
+    <section class="stats" aria-label="Datos del programa de colonias felinas">
+      <div class="stat-card">
+        <span class="stat-card__icon stat-card__icon--paw">🐾</span>
+        <strong class="stat-card__number">247</strong>
+        <span class="stat-card__label">Gatos censados</span>
+        <span class="stat-card__sub">12 este mes</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__icon stat-card__icon--pin">📍</span>
+        <strong class="stat-card__number">39</strong>
+        <span class="stat-card__label">Colonias activas</span>
+        <span class="stat-card__sub">En toda Aranda</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__icon stat-card__icon--heart">💚</span>
+        <strong class="stat-card__number">89%</strong>
+        <span class="stat-card__label">Esterilizados</span>
+        <span class="stat-card__sub">Objetivo CER</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__icon stat-card__icon--people">👥</span>
+        <strong class="stat-card__number">56</strong>
+        <span class="stat-card__label">Personas gestoras</span>
+        <span class="stat-card__sub">Red colaborativa</span>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -72,8 +90,7 @@
          a través de su publicación en Instagram. Las imágenes y textos pertenecen a cada protectora
          y enlazamos siempre a la publicación original.</p>
       <p class="fineprint">Licencia contenido <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>
-         · <a href="https://github.com/arandadeduero/peluditos" target="_blank" rel="noopener">Código GitHub</a>
-         · Mapa © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a></p>
+         · <a href="https://github.com/arandadeduero/peluditos" target="_blank" rel="noopener">Código GitHub</a></p>
     </div>
   </footer>
 
@@ -88,9 +105,7 @@
     </div>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="nav.js?v=1" defer></script>
   <script src="analytics.js?v=1" defer></script>
-  <script src="colonias-map.js?v=1" defer></script>
 </body>
 </html>
