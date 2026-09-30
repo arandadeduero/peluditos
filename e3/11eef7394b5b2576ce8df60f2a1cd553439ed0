@@ -1,0 +1,22 @@
+README.md
+  s_c49c567ee1322d::t_28c110a2cc2166 80-82
+.github/workflows/issue-flow-closed.yml
+  s_c49c567ee1322d::t_a51b43f0419361 43,50
+  s_c49c567ee1322d::t_b8d3a667d0c3c9 4-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e311eef7394b5b2576ce8df60f2a1cd553439ed0",
+  "prompts": {},
+  "sessions": {
+    "s_c49c567ee1322d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dc90a599-8ca3-45fb-a819-2e685910cc22",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Guillermo López <willyaranda@gmail.com>"
+    }
+  }
+}
