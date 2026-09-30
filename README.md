@@ -40,11 +40,12 @@ shelters.json ─┐
 - **Mapa de colonias** (`/mapa-colonias/`): mapa ([Leaflet](https://leafletjs.com/) + teselas de
   OpenStreetMap, sin API key) de las colonias felinas gestionadas por el Ayuntamiento, con lista
   accesible debajo sincronizada con el mapa. Datos en [`data/colonias.json`](data/colonias.json)
-  (un array de objetos `{id, nombre, zona, lat, lng, numGatos, gestionadaPor, programa, estado,
-  fechaAlta, descripcion, contacto}`); 38 colonias reales (censo de FeliniSave, mayo 2025),
-  geolocalizadas con [Nominatim](https://nominatim.org/) y datos de OpenStreetMap. Los campos sin
-  dato confirmado llevan el valor `"Desconocido"` (`colonias-map.js` lo muestra tal cual en vez de
-  romper el formateo numérico); una colonia sin `lat`/`lng` aparecería solo en la lista, sin
+  (un array de objetos `{id, nombre, zona, lat, lng, numGatos, programa, estado, fechaAlta,
+  descripcion, contacto}`); 38 colonias reales (censo de FeliniSave, mayo 2025), geolocalizadas
+  con [Nominatim](https://nominatim.org/) y datos de OpenStreetMap. No tienen gestor individual
+  asignado. Los campos sin dato confirmado llevan el valor `"Desconocido"` (`colonias-map.js` lo
+  muestra como «Número de gatos no conocido» en `numGatos`, en vez de romper el formateo numérico);
+  una colonia sin `lat`/`lng` aparecería solo en la lista, sin
   marcador en el mapa.
 - **Info** (`/info/`): página estática con 4 tarjetas de estadísticas reales del programa de
   colonias felinas (censo de FeliniSave, mayo 2025 — editar directamente en `info/index.html`

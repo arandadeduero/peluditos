@@ -15,8 +15,11 @@
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
   }).addTo(map);
 
-  const gatosLabel = (n) =>
-    n == null || n === '' ? '' : (typeof n === 'number' ? `${n} gatos aprox.` : String(n));
+  const gatosLabel = (n) => {
+    if (n == null || n === '') return '';
+    if (typeof n === 'number') return `${n} gatos aprox.`;
+    return n === 'Desconocido' ? 'Número de gatos no conocido' : String(n);
+  };
 
   function popupHtml(c) {
     const gatos = gatosLabel(c.numGatos);
@@ -24,7 +27,6 @@
       <strong>${escapeHtml(c.nombre)}</strong><br>
       ${escapeHtml(c.zona || '')}
       ${gatos ? `<br>🐱 ${escapeHtml(gatos)}` : ''}
-      ${c.gestionadaPor ? `<br>Gestiona: ${escapeHtml(c.gestionadaPor)}` : ''}
       ${c.descripcion ? `<br><span>${escapeHtml(c.descripcion)}</span>` : ''}`;
   }
 
@@ -51,7 +53,6 @@
           <strong>${escapeHtml(c.nombre)}</strong>
           <span class="colonias-list__zone">${escapeHtml(c.zona || '')}</span>
           ${gatos ? `<span>🐱 ${escapeHtml(gatos)}</span>` : ''}
-          ${c.gestionadaPor ? `<span>Gestiona: ${escapeHtml(c.gestionadaPor)}</span>` : ''}
           ${!hasCoords ? '<span class="colonias-list__nogeo">Ubicación pendiente de confirmar</span>' : ''}`;
         if (hasCoords) {
           li.tabIndex = 0;
