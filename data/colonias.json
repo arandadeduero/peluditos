@@ -377,8 +377,8 @@
     "id": "colonia-21",
     "nombre": "Cines Victoria",
     "zona": "Desconocido",
-    "lat": null,
-    "lng": null,
+    "lat": 41.667459,
+    "lng": -3.719542,
     "numGatos": "Desconocido",
     "gestionadaPor": "FeliniSave",
     "programa": "CER-M",
@@ -388,7 +388,7 @@
       "protectora": "FeliniSave",
       "email": "felinisave@gmail.com"
     },
-    "descripcion": "No se ha podido geolocalizar automáticamente con Nominatim/OpenStreetMap."
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
   },
   {
     "id": "colonia-22",
@@ -530,8 +530,8 @@
     "id": "colonia-30",
     "nombre": "Instituto ICDE",
     "zona": "Desconocido",
-    "lat": null,
-    "lng": null,
+    "lat": 41.661894,
+    "lng": -3.693188,
     "numGatos": 8,
     "gestionadaPor": "FeliniSave",
     "programa": "CER-M",
@@ -541,7 +541,7 @@
       "protectora": "FeliniSave",
       "email": "felinisave@gmail.com"
     },
-    "descripcion": "No se ha podido geolocalizar automáticamente con Nominatim/OpenStreetMap."
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
   },
   {
     "id": "colonia-31",
@@ -563,9 +563,9 @@
   {
     "id": "colonia-32",
     "nombre": "Camino Virgen de las Viñas",
-    "zona": "Desconocido",
-    "lat": null,
-    "lng": null,
+    "zona": "Virgen de las Viñas",
+    "lat": 41.681093,
+    "lng": -3.686765,
     "numGatos": "Desconocido",
     "gestionadaPor": "FeliniSave",
     "programa": "CER-M",
@@ -575,7 +575,7 @@
       "protectora": "FeliniSave",
       "email": "felinisave@gmail.com"
     },
-    "descripcion": "Entre fincas de la residencia y Alcampo. No se ha podido geolocalizar automáticamente con Nominatim/OpenStreetMap."
+    "descripcion": "Entre fincas de la residencia y Alcampo. Ubicación aproximada."
   },
   {
     "id": "colonia-33",
@@ -632,8 +632,8 @@
     "id": "colonia-36",
     "nombre": "Carretera Quemada",
     "zona": "Desconocido",
-    "lat": null,
-    "lng": null,
+    "lat": 41.673623,
+    "lng": -3.672558,
     "numGatos": "Desconocido",
     "gestionadaPor": "FeliniSave",
     "programa": "CER-M",
@@ -643,6 +643,6 @@
       "protectora": "FeliniSave",
       "email": "felinisave@gmail.com"
     },
-    "descripcion": "No se ha podido geolocalizar automáticamente con Nominatim/OpenStreetMap."
+    "descripcion": "Ubicación aproximada."
   }
 ]
