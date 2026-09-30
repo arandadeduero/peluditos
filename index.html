@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
   <header class="topbar">
@@ -63,9 +63,6 @@
           <p class="municipal-service__contact-note">¿Has encontrado un animal en la calle? Llama a este teléfono para avisar al servicio de recogida.</p>
         </div>
       </div>
-
-      <div id="recogidas" class="recogidas"></div>
-      <p id="recogidas-empty" class="municipal-service__pending" hidden>Todavía no hay fichas de animales recogidos publicadas.</p>
     </section>
 
     <section class="stats" aria-label="Datos del programa de colonias felinas">
@@ -122,6 +119,12 @@
     <div id="grid"></div>
     <p id="empty" class="empty" hidden>Aún no hay publicaciones. Vuelve pronto 🐾</p>
     <nav id="pager" class="pager" aria-label="Paginación" hidden></nav>
+
+    <section class="recogidas-section">
+      <h2 class="municipal-service__title">🐾 Animales bajo custodia municipal</h2>
+      <div id="recogidas" class="recogidas"></div>
+      <p id="recogidas-empty" class="municipal-service__pending" hidden>Todavía no hay fichas de animales recogidos publicadas.</p>
+    </section>
   </main>
 
   <footer class="site-footer">
