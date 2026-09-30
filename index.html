@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
 </head>
 <body>
   <header class="topbar">
@@ -39,12 +39,17 @@
       <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainnav">☰</button>
       <nav class="mainnav" id="mainnav" aria-label="Menú principal">
         <a href="./" class="is-active">Inicio</a>
-        <a href="archivo/">Archivo</a>
+        <a href="info/">Info</a>
         <a href="protectoras/">Protectoras y Asociaciones</a>
         <a href="mapa-colonias/">Mapa de colonias</a>
-        <a href="info/">Info</a>
-        <a href="https://www.instagram.com/ayuntamientoarandadeduero" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.facebook.com/aytoarandadeduero" target="_blank" rel="noopener">Facebook</a>
+        <a href="archivo/">Archivo</a>
+        <div class="nav-dropdown" data-nav-dropdown>
+          <button class="nav-dropdown__toggle" type="button" aria-haspopup="true" aria-expanded="false">RRSS ▾</button>
+          <div class="nav-dropdown__menu">
+            <a href="https://www.instagram.com/ayuntamientoarandadeduero" target="_blank" rel="noopener">📷 Instagram</a>
+            <a href="https://www.facebook.com/aytoarandadeduero" target="_blank" rel="noopener">📘 Facebook</a>
+          </div>
+        </div>
       </nav>
     </div>
   </header>
@@ -98,7 +103,7 @@
   </div>
 
   <script src="recogidas.js?v=1" defer></script>
-  <script src="nav.js?v=1" defer></script>
+  <script src="nav.js?v=3" defer></script>
   <script src="analytics.js?v=1" defer></script>
 </body>
 </html>
