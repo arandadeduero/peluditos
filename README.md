@@ -1,28 +1,16 @@
 # 🐾 Peluditos
 
-Agrega en una sola página las publicaciones recientes de Instagram de las protectoras y
-asociaciones de animales de **Aranda de Duero**, para que quien busca adoptar no tenga que
-entrar en varias cuentas distintas. Una web del **Ayuntamiento de Aranda de Duero**.
+Web del **Ayuntamiento de Aranda de Duero** sobre el servicio municipal de recogida de animales
+y el programa de colonias felinas del municipio, con un directorio informativo de las
+protectoras y asociaciones de animales que trabajan en Aranda de forma independiente.
 
 **En vivo:** <https://peluditos.arandadeduero.dev>
 
-Sitio **estático** (HTML/CSS/JS vanilla, sin build ni framework) que lee unos JSON generados a
-diario por un script Node **sin dependencias**, ejecutado por **GitHub Actions** y servido por
-**GitHub Pages**.
+Sitio **estático** (HTML/CSS/JS vanilla, sin build ni framework), servido por **GitHub Pages**.
+Los datos se editan a mano en el repo o se generan mediante un flujo de **GitHub Issues → PR →
+publicación** (ver más abajo); no hay ningún proceso automático (cron) que reescriba datos.
 
-## Cómo funciona
-
-```
-shelters.json ─┐
-               ├─ scripts/fetch.mjs  (cron diario, GitHub Actions)
-               │     1. Apify        → últimos posts de cada @cuenta
-               │     2. solo NUEVOS  → ingiere solo lo de los últimos 2 días (no backfill)
-               │     3. imágenes     → descarga a img/<shortcode>.jpg
-               │     4. Gemini       → clasifica {animal, categoría} (imagen + texto)
-               │     5. reparte      → data/posts.json (portada, ≤4 meses)
-               │                       data/archive/AAAA.json (más antiguos, por años)
-               └─ commit + deploy (en la misma tanda) → GitHub Pages → navegador
-```
+## Páginas
 
 - **Portada** (`/`): el apartado del **servicio municipal de recogida de animales** — cómo avisar
   si se encuentra un animal en la calle (Policía Local de Aranda de Duero, 947 51 26 46, 24 horas)
@@ -39,7 +27,9 @@ shelters.json ─┐
   original, que es donde vive la foto/descripción — el archivo en sí no las repite. Datos en
   [`data/archivo.json`](data/archivo.json) (un array de objetos `{id, issueUrl, fechaRecogida,
   lugarRecogida, motivo, fechaArchivado}`).
-- **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público.
+- **Protectoras** (`/protectoras/`): directorio informativo de cada entidad con logo y contacto
+  público. Son protectoras y asociaciones independientes, sin relación con el Ayuntamiento — la
+  página lo indica explícitamente.
 - **Mapa de colonias** (`/mapa-colonias/`): mapa ([Leaflet](https://leafletjs.com/) + teselas de
   OpenStreetMap, sin API key) de las colonias felinas gestionadas por el Ayuntamiento, con lista
   accesible debajo sincronizada con el mapa. Datos en [`data/colonias.json`](data/colonias.json)
@@ -47,15 +37,14 @@ shelters.json ─┐
   descripcion, contacto}`); 38 colonias reales (censo de FeliniSave, mayo 2025), geolocalizadas
   con [Nominatim](https://nominatim.org/) y datos de OpenStreetMap. No tienen gestor individual
   asignado. Los campos sin dato confirmado llevan el valor `"Desconocido"` (`colonias-map.js` lo
-  muestra como «Número de gatos no conocido» en `numGatos`, en vez de romper el formateo numérico);
-  una colonia sin `lat`/`lng` aparecería solo en la lista, sin
-  marcador en el mapa.
-- **Info** (`/info/`): página estática con 4 tarjetas de estadísticas reales del programa de
-  colonias felinas (censo de FeliniSave, mayo 2025 — editar directamente en `info/index.html`
-  cuando haya datos más recientes). Pensada para ampliarse con más información estática en el
-  futuro.
+  muestra como «Número de gatos no conocido» en `numGatos`, en vez de romper el formateo
+  numérico); una colonia sin `lat`/`lng` aparecería solo en la lista, sin marcador en el mapa.
+- **Info** (`/info/`): 4 tarjetas de estadísticas reales del programa de colonias felinas (censo
+  de FeliniSave, mayo 2025), un resumen del marco legal (Ley 7/2023) y el método CER, enlace de
+  descarga a la presentación completa en PDF, y un aviso para reportar fallos por GitHub Issues.
+  Editar directamente en `info/index.html` cuando haya datos más recientes.
 
-### Fichas propuestas por issue (GitHub Issues → PR → publicación)
+## Fichas propuestas por issue (GitHub Issues → PR → publicación)
 
 Este flujo es **solo para animales recogidos por el servicio municipal de recogida** — nunca
 para protectoras/asociaciones, que no tienen ninguna presencia en los issues. Cualquiera con
@@ -94,6 +83,9 @@ reclamado, trasladado a una protectora...). `archive-issue.yml` valida que ese i
 a [`data/archivo.json`](data/archivo.json) con un enlace al issue original — mismo esquema de
 validación → PR → revisión manual → `issue-flow-closed.yml` que el alta.
 
+Ambos flujos se probaron de extremo a extremo en vivo (issue → PR → fusión → publicación →
+archivado) antes de darlos por buenos.
+
 ## Estructura
 
 | Ruta | Qué es |
@@ -104,76 +96,56 @@ validación → PR → revisión manual → `issue-flow-closed.yml` que el alta.
 | `colonias-map.js` | Mapa de colonias felinas (Leaflet + OpenStreetMap) en `/mapa-colonias/`. |
 | `recogidas.js` | Fichas del servicio municipal de recogida en la portada (`/`). |
 | `archivo.js` | Listado enlazado a issues de GitHub en `/archivo/`. |
-| `scripts/fetch.mjs` | Pipeline de Instagram (fetch + clasificación + partición + poda) — **sin consumidor activo**: nada muestra ya `data/posts.json` en el sitio, ver Notas. |
-| `scripts/lib.mjs` | Utilidades del pipeline (`excerpt`, `parseIssueBody`, clasificación Gemini). |
-| `scripts/parse-animal-issue.mjs` | Valida un issue "Animal recogido" y genera su ficha (ver abajo). |
+| `scripts/lib.mjs` | `parseIssueBody`: parser línea a línea del cuerpo de un issue form. |
+| `scripts/parse-animal-issue.mjs` | Valida un issue "Animal recogido" y genera su ficha (ver arriba). |
 | `scripts/parse-archive-issue.mjs` | Valida un issue "Archivar animal" y mueve la ficha al archivo. |
-| `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto (solo para `/protectoras/`). |
-| `data/posts.json` | Escrito a diario por `fetch.mjs`; ninguna página lo lee actualmente. |
+| `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto, solo para el directorio en `/protectoras/`. |
 | `data/colonias.json` | Colonias felinas que pinta `/mapa-colonias/` (edición manual). |
 | `data/animales-recogidos.json` | Fichas del servicio municipal de recogida que pinta la portada (`/`) (edición manual o por issue). |
 | `data/archivo.json` | Fichas retiradas de la portada, con enlace a su issue original, que pinta `/archivo/`. |
-| `img/` | Imágenes de posts (`<shortcode>.jpg`, `issue-<n>.jpg`) + assets (`logo-web.jpg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
-| `.github/ISSUE_TEMPLATE/` | `nuevo-animal.yml` y `archivar-animal.yml`: formularios para proponer/retirar una ficha desde un issue. |
-| `.github/workflows/` | `update.yml` (cron Instagram + clasificación), `deploy-pages.yml` (despliega en cada push), `animal-issue.yml` + `archive-issue.yml` + `issue-flow-closed.yml` (fichas por issue). |
+| `img/` | `logo-web.jpg` (icono/marca), `og.jpg` (vista previa social), `placeholder.svg` (imagen de respaldo), `cartel-colonia-felina.jpg` (en `/info/`), `shelters/<username>.jpg` (logos de protectoras), `recogida-issue-<n>.jpg` (fotos añadidas por el flujo de issues). |
+| `docs/` | `gestion-colonias-felinas.pdf`, enlazado desde `/info/`. |
+| `.github/ISSUE_TEMPLATE/` | `nuevo-animal.yml` ("🐾 Animal recogido") y `archivar-animal.yml` ("🗄️ Archivar animal"): formularios para proponer/retirar una ficha desde un issue. |
+| `.github/workflows/` | `deploy-pages.yml` (despliega en cada push a `aranda`), `animal-issue.yml` + `archive-issue.yml` + `issue-flow-closed.yml` (fichas por issue). |
 
 ## Puesta en marcha
 
-1. **Cuentas.** Edita [`shelters.json`](shelters.json) con los `@usuario` reales. Campos de
-   contacto opcionales (se muestran en `/protectoras/` si están): `web`, `email`, `phone`,
-   `whatsapp`, `contactForm`, `facebook`, `linktree`. El logo se busca en
+1. **Protectoras.** Edita [`shelters.json`](shelters.json) con los datos reales de cada entidad.
+   Campos de contacto opcionales (se muestran en `/protectoras/` si están): `web`, `email`,
+   `phone`, `whatsapp`, `contactForm`, `facebook`, `linktree`. El logo se busca en
    `img/shelters/<username>.jpg` (si no existe, cae al logo genérico).
-2. **Apify** (datos de Instagram). Crea cuenta en [apify.com](https://apify.com), copia tu API
-   token. Usa el actor `apify/instagram-scraper`; cambiar de proveedor = editar solo
-   `fetchFromProvider` en `scripts/fetch.mjs`.
-3. **Gemini** (clasificación IA). Clave en [Google AI Studio](https://aistudio.google.com/apikey).
-   De **pago (prepago, nivel 1)** va rápido y sin saltarse posts; la **gratuita** también sirve
-   pero es lenta y a veces salta posts por saturación (503). Sin clave, la web funciona pero sin
-   categorías. Cambiar de IA = editar solo `classifyWithAI`. Modelo en `GEMINI_MODEL`
-   (`gemini-2.5-flash-lite`).
-4. **Secrets** (repo → *Settings → Secrets and variables → Actions*): `IG_API_TOKEN` y
-   `GEMINI_API_KEY`. Opcional: `IG_API_TOKEN_2`, una 2ª cuenta Apify a la que el fetch hace
-   failover si la 1ª agota su crédito gratuito.
-5. **Pages** (*Settings → Pages*): **Source = GitHub Actions** (no "Deploy from a branch").
-   El despliegue lo hacen los workflows. Dominio propio vía fichero [`CNAME`](CNAME).
-6. **Contacto:** cada protectora gestiona sus adopciones; el sitio enlaza a la publicación
-   original y da los contactos públicos de cada una. Textos del pie en las páginas HTML.
+2. **Pages** (*Settings → Pages*): **Source = GitHub Actions** (no "Deploy from a branch"). El
+   despliegue lo hace `deploy-pages.yml` en cada push a `aranda`. Dominio propio vía fichero
+   [`CNAME`](CNAME).
+3. **Datos del servicio de recogida y de colonias**: se editan directamente en
+   `data/animales-recogidos.json` / `data/colonias.json`, o (para animales recogidos) mediante el
+   flujo de issues descrito arriba. No requiere ninguna clave de API ni secret configurado.
 
 ## Desarrollo local
 
 ```bash
-node scripts/fetch.mjs --self-test                            # comprueba la lógica pura
-IG_API_TOKEN=xxx GEMINI_API_KEY=yyy node scripts/fetch.mjs    # sincroniza y clasifica de verdad
-CLASSIFY_ONLY=1 GEMINI_API_KEY=yyy node scripts/fetch.mjs     # sin Apify: solo clasifica pendientes
-python3 -m http.server                                        # sirve el sitio en localhost:8000
+node scripts/parse-animal-issue.mjs --self-test    # comprueba la validación de "Animal recogido"
+node scripts/parse-archive-issue.mjs --self-test   # comprueba la validación de "Archivar animal"
+python3 -m http.server                              # sirve el sitio en localhost:8000
 ```
 
 ## Operación y mantenimiento
 
-- **El cron** (`update.yml`, `0 5 * * *` UTC) es *best-effort*: GitHub lo **retrasa horas** o lo
-  salta. Para forzarlo: Actions → *Actualizar publicaciones* → *Run workflow* (o
-  `gh workflow run "Actualizar publicaciones"`).
-- **Despliegue.** Se hace por GitHub Actions. Ojo: los push del cron usan `GITHUB_TOKEN`, que
-  **no dispara** `deploy-pages.yml` (regla anti-recursión de GitHub); por eso `update.yml`
-  **despliega en su propio run**. Si el backend de Pages falla ("Deployment failed, try again
-  later"), es transitorio: relanzar *Desplegar en GitHub Pages*.
+- **Despliegue.** Lo hace `deploy-pages.yml` en cada push a `aranda` (incluidos los merges de PR
+  del flujo de issues). Si el backend de Pages falla ("Deployment failed, try again later"), es
+  transitorio: relanzar *Desplegar en GitHub Pages*.
 - **Añadir/quitar protectora o contactos/logos:** editar `shelters.json` (y opcionalmente subir
   `img/shelters/<username>.jpg`). Nada más.
 - **Verificar en vivo** saltando la caché del CDN: `curl "https://peluditos.arandadeduero.dev/data/animales-recogidos.json?cb=$RANDOM"`.
-
-## Ajustes (en `scripts/fetch.mjs`)
-
-- `INGEST_MAX_DAYS` (2): solo se ingieren posts de los últimos N días (no backfill de días viejos).
-- `CURRENT_DAYS` (122): ventana de la portada; lo anterior va al archivo por años.
-- `POSTS_PER_ACCOUNT` (25): cuántos posts recientes se piden por cuenta y ejecución.
-- `CLASSIFY_FAST=1` (env, lo pone el workflow): sin la pausa de 7s (para clave de pago).
+- **CSS/JS con caché.** Cloudflare cachea `styles.css` y los `.js` de forma independiente al
+  despliegue de GitHub Pages: cualquier cambio en esos ficheros necesita subir su `?v=N` en
+  **todas** las páginas que lo cargan, o el cambio no se verá en producción pese a estar
+  desplegado.
 
 ## Notas
 
-- **Términos de Instagram:** leer cuentas ajenas sin permiso está en zona gris de sus términos.
-  Uso sin ánimo de lucro; se enlaza siempre al post original y el contacto de adopción es
-  directo con cada protectora. El proveedor de datos asume la parte técnica.
-- **Contenido:** las imágenes y textos pertenecen a cada protectora. Licencia del proyecto:
+- **Contenido:** los logos de cada protectora son de su propiedad y se usan con su
+  consentimiento para el directorio de `/protectoras/`. Licencia del proyecto:
   **[CC BY-SA 4.0](LICENSE)**.
 - **Analítica:** Google Analytics 4 (`G-BXMC22W46S`, el mismo tracker que usa
   [fiestas.arandadeduero.es](https://github.com/arandadeduero/fiestas)) con consentimiento
@@ -186,4 +158,6 @@ python3 -m http.server                                        # sirve el sitio e
 Este proyecto es una adaptación de **Peluditos**, creado originalmente por vecinos voluntarios
 de la comunidad de [Aldea Pucela](https://aldeapucela.org) para las protectoras de Valladolid.
 Gracias a su equipo por el diseño y la infraestructura original en los que se basa esta versión
-para Aranda de Duero.
+para Aranda de Duero — aunque el propósito del sitio ha evolucionado bastante desde entonces:
+nació como agregador de publicaciones de Instagram de protectoras y hoy es la web municipal del
+servicio de recogida de animales y el programa de colonias felinas de Aranda de Duero.
