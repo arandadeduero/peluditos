@@ -523,6 +523,29 @@ main.container { padding-bottom: 3rem; }
   font-weight: 600;
   max-width: 60ch;
 }
+.info-block {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+  max-width: 68ch;
+}
+.info-block h2 {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--brand-800);
+}
+.info-block ul { margin: 0; padding-left: 1.2rem; color: var(--slate-700); font-size: .92rem; line-height: 1.7; }
+.info-block li + li { margin-top: .6rem; }
+.info-block li strong { color: var(--ink); }
+.info-block figure { margin: 1.5rem 0 0; max-width: 260px; }
+.info-block img {
+  width: 100%;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--line);
+}
+.info-block figcaption { margin-top: .5rem; font-size: .8rem; color: var(--slate-500); }
 .municipal-service {
   margin: 0 0 2rem;
   padding: 1.25rem 1.5rem;
