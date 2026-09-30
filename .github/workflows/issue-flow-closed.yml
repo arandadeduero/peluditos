@@ -1,9 +1,11 @@
 name: Cerrar ficha tras el PR
 
 # Ambos flujos de ficha por issue (animal-issue.yml → rama animal-issue-<n>, archive-issue.yml
-# → rama archive-issue-<n>) llevan "Closes #<n>" en la descripción del PR, así que GitHub cierra
-# el issue solo al fusionar — esto solo añade el aviso/etiqueta final en ambos casos: éxito
-# (fusionado) o rechazado (cerrado sin fusionar).
+# → rama archive-issue-<n>) llevan "Closes #<n>" en la descripción del PR, pero esa palabra
+# clave NO cierra el issue de forma confiable con un squash-merge (el mensaje del commit
+# resultante no incluye el cuerpo del PR) — comprobado en vivo: el issue se quedaba abierto.
+# Por eso este workflow cierra el issue explícitamente él mismo, además de añadir el
+# aviso/etiqueta final: éxito (fusionado) o rechazado (cerrado sin fusionar).
 
 on:
   pull_request:
@@ -38,12 +40,14 @@ jobs:
         run: |
           gh issue edit "${{ steps.issue.outputs.number }}" --add-label "publicado" --remove-label "pr-abierto" 2>/dev/null || true
           gh issue comment "${{ steps.issue.outputs.number }}" --body "🎉 ¡Publicado! Ya puedes verlo en https://peluditos.arandadeduero.dev/"
+          gh issue close "${{ steps.issue.outputs.number }}" --reason completed
 
       - name: Archivado (PR fusionado)
         if: ${{ github.event.pull_request.merged == true && steps.issue.outputs.kind == 'archive' }}
         run: |
           gh issue edit "${{ steps.issue.outputs.number }}" --add-label "archivado" --remove-label "pr-abierto" 2>/dev/null || true
           gh issue comment "${{ steps.issue.outputs.number }}" --body "🗄️ Ficha archivada. Ya no aparece en la portada; puedes encontrarla en https://peluditos.arandadeduero.dev/archivo/"
+          gh issue close "${{ steps.issue.outputs.number }}" --reason completed
 
       - name: Rechazado (PR cerrado sin fusionar)
         if: ${{ github.event.pull_request.merged == false }}

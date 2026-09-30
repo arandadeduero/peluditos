@@ -77,8 +77,9 @@ Issue "🐾 Animal recogido" ─┐
 
 PR fusionado (manual) ─┐
                         ├─ issue-flow-closed.yml
-                        │     el propio PR cierra el issue (lleva "Closes #<n>"); este workflow
-                        │     solo añade el aviso final: publicado (si se fusionó) o
+                        │     cierra el issue explícitamente (un squash-merge no dispara el
+                        │     cierre automático por palabra clave) y añade el aviso final:
+                        │     publicado (si se fusionó) o
                         │     necesita-cambios (si se cerró sin fusionar, para reintentarlo)
                         └─ deploy-pages.yml despliega igual que con cualquier otro push a aranda
 ```
