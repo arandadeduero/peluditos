@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": "recogida-issue-7",
+    "issueUrl": "https://github.com/arandadeduero/peluditos/issues/7",
+    "fechaRecogida": "2026-09-30",
+    "lugarRecogida": "Calle de Prueba, Aranda de Duero",
+    "motivo": "Prueba de archivado, se puede borrar.",
+    "fechaArchivado": "2026-09-30"
+  }
+]
