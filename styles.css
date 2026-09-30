@@ -637,6 +637,7 @@ main.container { padding-bottom: 3rem; }
 .colonias-list__item:focus-visible { border-color: var(--brand-400); box-shadow: var(--shadow-card); outline: none; }
 .colonias-list__item strong { color: var(--ink); font-size: .95rem; }
 .colonias-list__zone { color: var(--slate-500); }
+.colonias-list__nogeo { color: var(--slate-500); font-style: italic; font-size: .8rem; }
 .shelters {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

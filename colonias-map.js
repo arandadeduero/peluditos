@@ -15,11 +15,15 @@
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
   }).addTo(map);
 
+  const gatosLabel = (n) =>
+    n == null || n === '' ? '' : (typeof n === 'number' ? `${n} gatos aprox.` : String(n));
+
   function popupHtml(c) {
+    const gatos = gatosLabel(c.numGatos);
     return `
       <strong>${escapeHtml(c.nombre)}</strong><br>
       ${escapeHtml(c.zona || '')}
-      ${c.numGatos != null ? `<br>🐱 ${Number(c.numGatos)} gatos aprox.` : ''}
+      ${gatos ? `<br>🐱 ${escapeHtml(gatos)}` : ''}
       ${c.gestionadaPor ? `<br>Gestiona: ${escapeHtml(c.gestionadaPor)}` : ''}
       ${c.descripcion ? `<br><span>${escapeHtml(c.descripcion)}</span>` : ''}`;
   }
@@ -27,38 +31,44 @@
   fetch('data/colonias.json')
     .then((r) => (r.ok ? r.json() : []))
     .then((data) => {
-      const colonias = (Array.isArray(data) ? data : []).filter(
-        (c) => typeof c.lat === 'number' && typeof c.lng === 'number'
-      );
+      const colonias = Array.isArray(data) ? data : [];
       emptyEl.hidden = colonias.length > 0;
       if (!colonias.length) return;
 
       const bounds = [];
       for (const c of colonias) {
-        bounds.push([c.lat, c.lng]);
-        const marker = L.marker([c.lat, c.lng]).addTo(map).bindPopup(popupHtml(c));
+        const hasCoords = typeof c.lat === 'number' && typeof c.lng === 'number';
+        let marker = null;
+        if (hasCoords) {
+          bounds.push([c.lat, c.lng]);
+          marker = L.marker([c.lat, c.lng]).addTo(map).bindPopup(popupHtml(c));
+        }
 
+        const gatos = gatosLabel(c.numGatos);
         const li = document.createElement('li');
         li.className = 'colonias-list__item';
-        li.tabIndex = 0;
         li.innerHTML = `
           <strong>${escapeHtml(c.nombre)}</strong>
           <span class="colonias-list__zone">${escapeHtml(c.zona || '')}</span>
-          ${c.numGatos != null ? `<span>🐱 ${Number(c.numGatos)} gatos aprox.</span>` : ''}
-          ${c.gestionadaPor ? `<span>Gestiona: ${escapeHtml(c.gestionadaPor)}</span>` : ''}`;
-        const focusColonia = () => {
-          map.setView([c.lat, c.lng], 17);
-          marker.openPopup();
-        };
-        li.addEventListener('click', focusColonia);
-        li.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focusColonia(); }
-        });
+          ${gatos ? `<span>🐱 ${escapeHtml(gatos)}</span>` : ''}
+          ${c.gestionadaPor ? `<span>Gestiona: ${escapeHtml(c.gestionadaPor)}</span>` : ''}
+          ${!hasCoords ? '<span class="colonias-list__nogeo">Ubicación pendiente de confirmar</span>' : ''}`;
+        if (hasCoords) {
+          li.tabIndex = 0;
+          const focusColonia = () => {
+            map.setView([c.lat, c.lng], 17);
+            marker.openPopup();
+          };
+          li.addEventListener('click', focusColonia);
+          li.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focusColonia(); }
+          });
+        }
         listEl.appendChild(li);
       }
 
       if (bounds.length > 1) map.fitBounds(bounds, { padding: [30, 30] });
-      else map.setView(bounds[0], 16);
+      else if (bounds.length === 1) map.setView(bounds[0], 16);
     })
     .catch(() => { emptyEl.hidden = false; });
 })();

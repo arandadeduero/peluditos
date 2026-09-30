@@ -41,10 +41,14 @@ shelters.json ─┐
   OpenStreetMap, sin API key) de las colonias felinas gestionadas por el Ayuntamiento, con lista
   accesible debajo sincronizada con el mapa. Datos en [`data/colonias.json`](data/colonias.json)
   (un array de objetos `{id, nombre, zona, lat, lng, numGatos, gestionadaPor, programa, estado,
-  fechaAlta, descripcion, contacto}`); de momento solo hay una colonia de ejemplo.
-- **Info** (`/info/`): página estática con 4 tarjetas de estadísticas del programa de colonias
-  felinas (de momento con cifras de ejemplo, editar directamente en `info/index.html`). Pensada
-  para ampliarse con más información estática en el futuro.
+  fechaAlta, descripcion, contacto}`); 38 colonias reales (censo de FeliniSave, mayo 2025),
+  geolocalizadas con [Nominatim](https://nominatim.org/) donde ha sido posible — las que no se han
+  podido geolocalizar aparecen solo en la lista, con `lat`/`lng` a `null`. Los campos sin dato
+  confirmado llevan el valor `"Desconocido"`.
+- **Info** (`/info/`): página estática con 4 tarjetas de estadísticas reales del programa de
+  colonias felinas (censo de FeliniSave, mayo 2025 — editar directamente en `info/index.html`
+  cuando haya datos más recientes). Pensada para ampliarse con más información estática en el
+  futuro.
 
 ### Fichas propuestas por issue (GitHub Issues → PR → publicación)
 

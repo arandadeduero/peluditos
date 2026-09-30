@@ -1,19 +1,648 @@
 [
   {
-    "id": "colonia-ejemplo-01",
-    "nombre": "Colonia de ejemplo",
-    "zona": "Centro",
-    "lat": 41.6708,
-    "lng": -3.6892,
-    "numGatos": 6,
+    "id": "colonia-01",
+    "nombre": "Calle Hospicio / Carrequemada",
+    "zona": "Santa Catalina",
+    "lat": 41.670105,
+    "lng": -3.6817,
+    "numGatos": "Desconocido",
     "gestionadaPor": "FeliniSave",
     "programa": "CER-M",
     "estado": "activa",
-    "fechaAlta": "2026-01-01",
-    "descripcion": "Esta es una colonia de ejemplo. Aquí aparecerán las colonias felinas reales gestionadas por el Ayuntamiento de Aranda de Duero en cuanto se incorporen sus datos.",
+    "fechaAlta": "Desconocido",
     "contacto": {
       "protectora": "FeliniSave",
       "email": "felinisave@gmail.com"
-    }
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-02",
+    "nombre": "Ronda / Calle Santa Lucía",
+    "zona": "Desconocido",
+    "lat": 41.670111,
+    "lng": -3.687524,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-03",
+    "nombre": "Polígono Prado Marina",
+    "zona": "Polígono Prado Marina",
+    "lat": 41.657472,
+    "lng": -3.712945,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-04a",
+    "nombre": "Calle Santo Domingo — Descampado",
+    "zona": "Desconocido",
+    "lat": 41.667547,
+    "lng": -3.691859,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Una de las tres colonias próximas entre sí en la zona de Calle Santo Domingo."
+  },
+  {
+    "id": "colonia-04b",
+    "nombre": "Calle Santo Domingo — Casa quemada",
+    "zona": "Desconocido",
+    "lat": 41.667547,
+    "lng": -3.691859,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Una de las tres colonias próximas entre sí en la zona de Calle Santo Domingo."
+  },
+  {
+    "id": "colonia-04c",
+    "nombre": "Calle Santo Domingo — Centro Calma",
+    "zona": "Desconocido",
+    "lat": 41.667547,
+    "lng": -3.691859,
+    "numGatos": 5,
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Una de las tres colonias próximas entre sí en la zona de Calle Santo Domingo."
+  },
+  {
+    "id": "colonia-05",
+    "nombre": "Calle Simón de Colonia",
+    "zona": "Desconocido",
+    "lat": 41.668017,
+    "lng": -3.69288,
+    "numGatos": 10,
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Gatos en semipropiedad, casas bajas con acceso al exterior. Control difícil."
+  },
+  {
+    "id": "colonia-06",
+    "nombre": "Residencia Hogar Sagrada Familia",
+    "zona": "Desconocido",
+    "lat": 41.666981,
+    "lng": -3.695227,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Gatos itinerantes también por Calle Rafael Alberti, zona del McDonald's."
+  },
+  {
+    "id": "colonia-07",
+    "nombre": "Carretera de Burgos",
+    "zona": "Desconocido",
+    "lat": 41.689016,
+    "lng": -3.685104,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Varias colonias próximas entre sí a lo largo de la carretera; ubicación aproximada."
+  },
+  {
+    "id": "colonia-08",
+    "nombre": "Residencia ASADEMA / Virgen de las Viñas",
+    "zona": "Virgen de las Viñas",
+    "lat": 41.68091,
+    "lng": -3.687866,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-09",
+    "nombre": "Parque La Huerta",
+    "zona": "Desconocido",
+    "lat": 41.668363,
+    "lng": -3.679276,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-10",
+    "nombre": "Parque Allendeduero",
+    "zona": "Desconocido",
+    "lat": 41.664245,
+    "lng": -3.686861,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-11",
+    "nombre": "Carretera de Sinovas",
+    "zona": "Sinovas",
+    "lat": 41.701431,
+    "lng": -3.662854,
+    "numGatos": 21,
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-12",
+    "nombre": "Calle Rosales / Glorieta Rosales",
+    "zona": "Desconocido",
+    "lat": 41.665537,
+    "lng": -3.689819,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-13",
+    "nombre": "Calle Aguilera",
+    "zona": "Desconocido",
+    "lat": 41.672054,
+    "lng": -3.689691,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Frente al centro comercial Alcampo."
+  },
+  {
+    "id": "colonia-14",
+    "nombre": "Eras de Santa Catalina",
+    "zona": "Santa Catalina",
+    "lat": 41.672071,
+    "lng": -3.676196,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Ubicación aproximada (a nivel de barrio)."
+  },
+  {
+    "id": "colonia-15",
+    "nombre": "Callejón pizzería Cantinaccia",
+    "zona": "Desconocido",
+    "lat": 41.672187,
+    "lng": -3.684565,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-16",
+    "nombre": "Cementerio Viejo",
+    "zona": "Desconocido",
+    "lat": 41.681548,
+    "lng": -3.703963,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-17",
+    "nombre": "Calle La Presa",
+    "zona": "Desconocido",
+    "lat": 41.673845,
+    "lng": -3.688276,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-18",
+    "nombre": "Calle Fuenteminaya",
+    "zona": "Desconocido",
+    "lat": 41.674361,
+    "lng": -3.687959,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-19",
+    "nombre": "Camino de las Lagunas",
+    "zona": "Desconocido",
+    "lat": 41.679063,
+    "lng": -3.667554,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-20",
+    "nombre": "Traseras Calle San Esteban / río",
+    "zona": "Desconocido",
+    "lat": 41.667825,
+    "lng": -3.688592,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-21",
+    "nombre": "Cines Victoria",
+    "zona": "Desconocido",
+    "lat": null,
+    "lng": null,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "No se ha podido geolocalizar automáticamente con Nominatim/OpenStreetMap."
+  },
+  {
+    "id": "colonia-22",
+    "nombre": "Calle Silverio Velasco",
+    "zona": "Desconocido",
+    "lat": 41.670377,
+    "lng": -3.683272,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-23",
+    "nombre": "Calle Padre Claret",
+    "zona": "Desconocido",
+    "lat": 41.668289,
+    "lng": -3.686504,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-24",
+    "nombre": "Parque de la Isla",
+    "zona": "Desconocido",
+    "lat": 41.668733,
+    "lng": -3.684998,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-25",
+    "nombre": "Callejón junto a parking Sol de las Moreras",
+    "zona": "Santa Catalina",
+    "lat": 41.669385,
+    "lng": -3.682893,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-26",
+    "nombre": "Calle Cascajar",
+    "zona": "Desconocido",
+    "lat": 41.672266,
+    "lng": -3.688215,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-27",
+    "nombre": "Instituto Sandoval y Rojas (detrás)",
+    "zona": "Santa Catalina",
+    "lat": 41.67298,
+    "lng": -3.672908,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-28",
+    "nombre": "Barrio de Sinovas",
+    "zona": "Sinovas",
+    "lat": 41.702046,
+    "lng": -3.66411,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-29",
+    "nombre": "Rampa Calle Pedro Sanz Abad / Santa Catalina Río",
+    "zona": "Santa Catalina",
+    "lat": 41.66963,
+    "lng": -3.677205,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-30",
+    "nombre": "Instituto ICDE",
+    "zona": "Desconocido",
+    "lat": null,
+    "lng": null,
+    "numGatos": 8,
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "No se ha podido geolocalizar automáticamente con Nominatim/OpenStreetMap."
+  },
+  {
+    "id": "colonia-31",
+    "nombre": "Centro Cívico Virgen de las Viñas",
+    "zona": "Santa Catalina",
+    "lat": 41.671716,
+    "lng": -3.67865,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-32",
+    "nombre": "Camino Virgen de las Viñas",
+    "zona": "Desconocido",
+    "lat": null,
+    "lng": null,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Entre fincas de la residencia y Alcampo. No se ha podido geolocalizar automáticamente con Nominatim/OpenStreetMap."
+  },
+  {
+    "id": "colonia-33",
+    "nombre": "Bajada ermita San Pedro",
+    "zona": "Desconocido",
+    "lat": 41.666996,
+    "lng": -3.667877,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "En dirección Calabaza."
+  },
+  {
+    "id": "colonia-34",
+    "nombre": "Travesía El Ferial",
+    "zona": "Desconocido",
+    "lat": 41.673442,
+    "lng": -3.683986,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Colonia felina urbana incluida en el censo municipal de 2025."
+  },
+  {
+    "id": "colonia-35",
+    "nombre": "Calle San Isidro",
+    "zona": "Desconocido",
+    "lat": 41.675296,
+    "lng": -3.685196,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "Descampado."
+  },
+  {
+    "id": "colonia-36",
+    "nombre": "Carretera Quemada",
+    "zona": "Desconocido",
+    "lat": null,
+    "lng": null,
+    "numGatos": "Desconocido",
+    "gestionadaPor": "FeliniSave",
+    "programa": "CER-M",
+    "estado": "activa",
+    "fechaAlta": "Desconocido",
+    "contacto": {
+      "protectora": "FeliniSave",
+      "email": "felinisave@gmail.com"
+    },
+    "descripcion": "No se ha podido geolocalizar automáticamente con Nominatim/OpenStreetMap."
   }
 ]
