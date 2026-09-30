@@ -1,5 +1,14 @@
 [
   {
+    "id": "recogida-issue-7",
+    "foto": "img/recogida-issue-7.jpg",
+    "fechaRecogida": "2026-09-30",
+    "lugarRecogida": "Calle de Prueba, Aranda de Duero",
+    "situacion": "En custodia municipal",
+    "descripcion": "Issue de prueba para verificar el nuevo flujo (se archivará y se puede borrar después).",
+    "issueUrl": "https://github.com/arandadeduero/peluditos/issues/7"
+  },
+  {
     "id": "recogida-ejemplo-01",
     "foto": "img/placeholder.svg",
     "fechaRecogida": "2026-09-01",
