@@ -283,17 +283,19 @@ function renderMore(visibleCount, list) {
 }
 
 function initFilters() {
-  for (const n of [...new Set(posts.map((p) => p.shelter))].sort()) {
-    const o = document.createElement('option');
-    o.value = n;
-    o.textContent = n;
-    shelterSel.appendChild(o);
+  if (shelterSel) {
+    for (const n of [...new Set(posts.map((p) => p.shelter))].sort()) {
+      const o = document.createElement('option');
+      o.value = n;
+      o.textContent = n;
+      shelterSel.appendChild(o);
+    }
+    shelterSel.addEventListener('change', () => {
+      filterShelter = shelterSel.value;
+      shownWeeks = INITIAL_WEEKS; // al cambiar de filtro, vuelve a las 2 últimas semanas
+      render();
+    });
   }
-  shelterSel.addEventListener('change', () => {
-    filterShelter = shelterSel.value;
-    shownWeeks = INITIAL_WEEKS; // al cambiar de filtro, vuelve a las 2 últimas semanas
-    render();
-  });
   typeBtns.forEach((b) =>
     b.addEventListener('click', () => {
       typeBtns.forEach((x) => x.classList.remove('is-active'));
