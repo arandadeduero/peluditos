@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
   <header class="topbar">
@@ -55,17 +55,22 @@
        se muestran en esta web. Síguelas y colabora con ellas directamente.</p>
 
     <section class="municipal-service">
-      <h2 class="municipal-service__title">📋 Servicio municipal de recogida de animales</h2>
+      <h2 class="municipal-service__title">🐾 Servicio municipal de recogida de animales</h2>
       <p>El Ayuntamiento de Aranda de Duero tiene contratado un servicio de recogida de animales
-         abandonados o perdidos en la vía pública. Según el pliego de condiciones de ese contrato,
-         esta web debe dar publicidad a los animales que estén bajo custodia del adjudicatario.</p>
-      <dl class="municipal-service__data">
-        <dt>Adjudicatario actual</dt><dd>Juan Francisco Durán</dd>
-        <dt>Teléfono</dt><dd><a href="tel:947000000">947 00 00 00</a></dd>
-        <dt>Dirección</dt><dd>Polígono Industrial, Aranda de Duero</dd>
-        <dt>Horario</dt><dd>Lunes a viernes, 9:00–14:00</dd>
-      </dl>
-      <p class="municipal-service__pending">⚠️ Datos de contacto de ejemplo, pendientes de confirmar con el adjudicatario.</p>
+         abandonados o perdidos en la vía pública. Aquí se publican, a modo de aviso, los animales
+         que están bajo custodia de este servicio municipal.</p>
+
+      <div class="municipal-service__contact">
+        <span class="municipal-service__contact-icon" aria-hidden="true">📞</span>
+        <div>
+          <a class="municipal-service__contact-phone" href="tel:947512646">947 51 26 46</a>
+          <p class="municipal-service__contact-sub">Policía Local de Aranda de Duero · Atención las 24 horas del día</p>
+          <p class="municipal-service__contact-note">¿Has encontrado un animal en la calle? Llama a este teléfono para avisar al servicio de recogida.</p>
+        </div>
+      </div>
+
+      <div id="recogidas" class="recogidas"></div>
+      <p id="recogidas-empty" class="municipal-service__pending" hidden>Todavía no hay fichas de animales recogidos publicadas.</p>
     </section>
 
     <div id="shelters" class="shelters"></div>
@@ -145,6 +150,33 @@
             <span class="shelter-card__zone">${esc(s.zone)}</span>
             <div class="shelter-card__contact">${contactHtml}</div>`;
           grid.appendChild(card);
+        }
+      });
+
+    const fmtFecha = (iso) => {
+      const d = new Date(`${iso}T00:00:00`);
+      return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    };
+
+    fetch('data/animales-recogidos.json')
+      .then((r) => (r.ok ? r.json() : []))
+      .then((animales) => {
+        const wrap = document.getElementById('recogidas');
+        const empty = document.getElementById('recogidas-empty');
+        if (!animales.length) { empty.hidden = false; return; }
+        for (const a of animales) {
+          const card = document.createElement('div');
+          card.className = 'recogida-card';
+          card.innerHTML = `
+            <img class="recogida-card__photo" loading="lazy" alt="Animal recogido por el servicio municipal"
+                 src="${esc(a.foto)}" onerror="this.onerror=null;this.src='img/placeholder.svg'">
+            <div class="recogida-card__body">
+              <span class="recogida-card__situacion">${esc(a.situacion)}</span>
+              <p class="recogida-card__data"><strong>Fecha:</strong> ${esc(fmtFecha(a.fechaRecogida))}</p>
+              <p class="recogida-card__data"><strong>Lugar:</strong> ${esc(a.lugarRecogida)}</p>
+              ${a.descripcion ? `<p class="recogida-card__desc">${esc(a.descripcion)}</p>` : ''}
+            </div>`;
+          wrap.appendChild(card);
         }
       });
   </script>

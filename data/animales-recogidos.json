@@ -1,0 +1,10 @@
+[
+  {
+    "id": "recogida-ejemplo-01",
+    "foto": "img/placeholder.svg",
+    "fechaRecogida": "2026-09-01",
+    "lugarRecogida": "Calle de ejemplo, Aranda de Duero",
+    "situacion": "En custodia municipal",
+    "descripcion": "Esta es una ficha de ejemplo. Aquí aparecerán los animales reales recogidos por el servicio municipal de recogida de animales en cuanto se incorporen sus datos."
+  }
+]

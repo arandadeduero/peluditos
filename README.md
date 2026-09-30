@@ -32,9 +32,13 @@ shelters.json ─┐
   de ejemplo, editar directamente en `index.html`).
 - **Archivo** (`/archivo/`): lo que supera los ~4 meses, por años.
 - **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público, más un
-  apartado sobre el servicio municipal de recogida de animales (el pliego del contrato exige dar
-  publicidad a los animales bajo custodia del adjudicatario; datos de contacto de ejemplo,
-  pendientes de confirmar — editar directamente en `protectoras/index.html`).
+  apartado sobre el servicio municipal de recogida de animales: cómo avisar si se encuentra un
+  animal en la calle (Policía Local de Aranda de Duero, 947 51 26 46, 24 horas) y las fichas de
+  los animales que están bajo custodia de ese servicio (fotografía, fecha y lugar de recogida,
+  situación). Datos en [`data/animales-recogidos.json`](data/animales-recogidos.json) (un array de
+  objetos `{id, foto, fechaRecogida, lugarRecogida, situacion, descripcion}`); de momento solo hay
+  una ficha de ejemplo. Este apartado es exclusivamente del servicio municipal, no de las
+  protectoras/asociaciones (esas tienen su propia ficha justo debajo).
 - **Mapa de colonias** (`/mapa-colonias/`): mapa ([Leaflet](https://leafletjs.com/) + teselas de
   OpenStreetMap, sin API key) de las colonias felinas gestionadas por el Ayuntamiento, con lista
   accesible debajo sincronizada con el mapa. Datos en [`data/colonias.json`](data/colonias.json)
@@ -95,6 +99,7 @@ revisión manual → `issue-flow-closed.yml` que el alta.
 | `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto. |
 | `data/posts.json` · `data/archive/*.json` | Datos generados (portada / archivo). |
 | `data/colonias.json` | Colonias felinas que pinta `/mapa-colonias/` (edición manual). |
+| `data/animales-recogidos.json` | Fichas del servicio municipal de recogida que pinta `/protectoras/` (edición manual). |
 | `img/` | Imágenes de posts (`<shortcode>.jpg`, `issue-<n>.jpg`) + assets (`logo-web.jpg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
 | `.github/ISSUE_TEMPLATE/` | `nuevo-animal.yml` y `archivar-animal.yml`: formularios para proponer/retirar una ficha desde un issue. |
 | `.github/workflows/` | `update.yml` (cron Instagram + clasificación), `deploy-pages.yml` (despliega en cada push), `animal-issue.yml` + `archive-issue.yml` + `issue-flow-closed.yml` (fichas por issue). |
