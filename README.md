@@ -24,21 +24,22 @@ shelters.json ─┐
                └─ commit + deploy (en la misma tanda) → GitHub Pages → navegador
 ```
 
-- **Portada** (`/`): tarjetas de las **últimas 2 semanas** (con botón «Mostrar más» que revela
-  2 semanas más cada vez), agrupadas por día (hora de Madrid), con filtros por **animal**
-  (perro/gato/otro) y **categoría** (adopción/acogida/perdido/donación/evento/otro) y por
-  protectora. Cada publicación tiene su ancla `#post-<id>` (enlace directo compartible). Debajo
-  del hero, 4 tarjetas de estadísticas del programa de colonias felinas (de momento con cifras
-  de ejemplo, editar directamente en `index.html`).
+- **Portada** (`/`): justo debajo del hero, el apartado del **servicio municipal de recogida de
+  animales** — cómo avisar si se encuentra un animal en la calle (Policía Local de Aranda de
+  Duero, 947 51 26 46, 24 horas) y las fichas de los animales que están bajo custodia de ese
+  servicio (fotografía, fecha y lugar de recogida, situación). Datos en
+  [`data/animales-recogidos.json`](data/animales-recogidos.json) (un array de objetos `{id, foto,
+  fechaRecogida, lugarRecogida, situacion, descripcion}`); de momento solo hay una ficha de
+  ejemplo. Es un servicio exclusivamente municipal, sin relación con las protectoras/asociaciones
+  (esas tienen su propia página, ver más abajo). Después, tarjetas de las **últimas 2 semanas**
+  (con botón «Mostrar más» que revela 2 semanas más cada vez) de publicaciones de las protectoras,
+  agrupadas por día (hora de Madrid), con filtros por **animal** (perro/gato/otro) y **categoría**
+  (adopción/acogida/perdido/donación/evento/otro) y por protectora. Cada publicación tiene su
+  ancla `#post-<id>` (enlace directo compartible). Por último, 4 tarjetas de estadísticas del
+  programa de colonias felinas (de momento con cifras de ejemplo, editar directamente en
+  `index.html`).
 - **Archivo** (`/archivo/`): lo que supera los ~4 meses, por años.
-- **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público, más un
-  apartado sobre el servicio municipal de recogida de animales: cómo avisar si se encuentra un
-  animal en la calle (Policía Local de Aranda de Duero, 947 51 26 46, 24 horas) y las fichas de
-  los animales que están bajo custodia de ese servicio (fotografía, fecha y lugar de recogida,
-  situación). Datos en [`data/animales-recogidos.json`](data/animales-recogidos.json) (un array de
-  objetos `{id, foto, fechaRecogida, lugarRecogida, situacion, descripcion}`); de momento solo hay
-  una ficha de ejemplo. Este apartado es exclusivamente del servicio municipal, no de las
-  protectoras/asociaciones (esas tienen su propia ficha justo debajo).
+- **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público.
 - **Mapa de colonias** (`/mapa-colonias/`): mapa ([Leaflet](https://leafletjs.com/) + teselas de
   OpenStreetMap, sin API key) de las colonias felinas gestionadas por el Ayuntamiento, con lista
   accesible debajo sincronizada con el mapa. Datos en [`data/colonias.json`](data/colonias.json)
@@ -92,6 +93,7 @@ revisión manual → `issue-flow-closed.yml` que el alta.
 | `nav.js` | Menú hamburguesa en móvil. |
 | `analytics.js` | Google Analytics 4 con consentimiento explícito (banner «Aceptar»/«Denegar»). |
 | `colonias-map.js` | Mapa de colonias felinas (Leaflet + OpenStreetMap) en `/mapa-colonias/`. |
+| `recogidas.js` | Fichas del servicio municipal de recogida en la portada (`/`). |
 | `scripts/fetch.mjs` | Pipeline de Instagram (fetch + clasificación + partición + poda). |
 | `scripts/lib.mjs` | Utilidades del pipeline (`excerpt`, clasificación Gemini). |
 | `scripts/parse-animal-issue.mjs` | Valida un issue "Nuevo animal" y genera su ficha (ver abajo). |
@@ -99,7 +101,7 @@ revisión manual → `issue-flow-closed.yml` que el alta.
 | `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto. |
 | `data/posts.json` · `data/archive/*.json` | Datos generados (portada / archivo). |
 | `data/colonias.json` | Colonias felinas que pinta `/mapa-colonias/` (edición manual). |
-| `data/animales-recogidos.json` | Fichas del servicio municipal de recogida que pinta `/protectoras/` (edición manual). |
+| `data/animales-recogidos.json` | Fichas del servicio municipal de recogida que pinta la portada (`/`) (edición manual). |
 | `img/` | Imágenes de posts (`<shortcode>.jpg`, `issue-<n>.jpg`) + assets (`logo-web.jpg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
 | `.github/ISSUE_TEMPLATE/` | `nuevo-animal.yml` y `archivar-animal.yml`: formularios para proponer/retirar una ficha desde un issue. |
 | `.github/workflows/` | `update.yml` (cron Instagram + clasificación), `deploy-pages.yml` (despliega en cada push), `animal-issue.yml` + `archive-issue.yml` + `issue-flow-closed.yml` (fichas por issue). |

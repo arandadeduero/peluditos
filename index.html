@@ -60,6 +60,25 @@
       </div>
     </section>
 
+    <section class="municipal-service">
+      <h2 class="municipal-service__title">🐾 Servicio municipal de recogida de animales</h2>
+      <p>El Ayuntamiento de Aranda de Duero tiene contratado un servicio de recogida de animales
+         abandonados o perdidos en la vía pública. Aquí se publican, a modo de aviso, los animales
+         que están bajo custodia de este servicio municipal.</p>
+
+      <div class="municipal-service__contact">
+        <span class="municipal-service__contact-icon" aria-hidden="true">📞</span>
+        <div>
+          <a class="municipal-service__contact-phone" href="tel:947512646">947 51 26 46</a>
+          <p class="municipal-service__contact-sub">Policía Local de Aranda de Duero · Atención las 24 horas del día</p>
+          <p class="municipal-service__contact-note">¿Has encontrado un animal en la calle? Llama a este teléfono para avisar al servicio de recogida.</p>
+        </div>
+      </div>
+
+      <div id="recogidas" class="recogidas"></div>
+      <p id="recogidas-empty" class="municipal-service__pending" hidden>Todavía no hay fichas de animales recogidos publicadas.</p>
+    </section>
+
     <section class="stats" aria-label="Datos del programa de colonias felinas">
       <div class="stat-card">
         <span class="stat-card__icon stat-card__icon--paw">🐾</span>
@@ -140,6 +159,7 @@
   </div>
 
   <script src="app.js?v=1" defer></script>
+  <script src="recogidas.js?v=1" defer></script>
   <script src="nav.js?v=1" defer></script>
   <script src="analytics.js?v=1" defer></script>
 </body>
