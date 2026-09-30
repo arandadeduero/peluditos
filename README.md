@@ -29,13 +29,16 @@ shelters.json ─┐
   sobre fondo destacado, y debajo, ya sobre el fondo normal de la página y al final del todo, las
   fichas de los animales que están bajo custodia de ese servicio (fotografía, fecha y lugar de
   recogida, situación). Datos en [`data/animales-recogidos.json`](data/animales-recogidos.json)
-  (un array de objetos `{id, foto, fechaRecogida, lugarRecogida, situacion, descripcion}`); de
-  momento solo hay una ficha de ejemplo. Es un servicio exclusivamente municipal, sin relación con
-  las protectoras/asociaciones (esas tienen su propia página, ver más abajo).
-- **Archivo** (`/archivo/`): tarjetas de publicaciones de las protectoras (lo que supera los ~4
-  meses, por años), agrupadas por día, con filtros por **animal** (perro/gato/otro) y **categoría**
-  (adopción/acogida/perdido/donación/evento/otro) y por protectora. Cada publicación tiene su ancla
-  `#post-<id>` (enlace directo compartible).
+  (un array de objetos `{id, foto, fechaRecogida, lugarRecogida, situacion, descripcion,
+  issueUrl}`; `issueUrl` solo lo llevan las fichas creadas por issue). Es un servicio
+  exclusivamente municipal, sin relación con las protectoras/asociaciones (esas tienen su propia
+  página, ver más abajo, y no aparecen ni aquí ni en el flujo de issues).
+- **Archivo** (`/archivo/`): listado de animales que ya no están bajo custodia municipal
+  (adoptados, reclamados por su propietario, trasladados...). Archivar es siempre **manual** (no
+  hay ninguna regla automática por antigüedad) y cada entrada enlaza a su issue de GitHub
+  original, que es donde vive la foto/descripción — el archivo en sí no las repite. Datos en
+  [`data/archivo.json`](data/archivo.json) (un array de objetos `{id, issueUrl, fechaRecogida,
+  lugarRecogida, motivo, fechaArchivado}`).
 - **Protectoras** (`/protectoras/`): ficha de cada entidad con logo y contacto público.
 - **Mapa de colonias** (`/mapa-colonias/`): mapa ([Leaflet](https://leafletjs.com/) + teselas de
   OpenStreetMap, sin API key) de las colonias felinas gestionadas por el Ayuntamiento, con lista
@@ -54,20 +57,23 @@ shelters.json ─┐
 
 ### Fichas propuestas por issue (GitHub Issues → PR → publicación)
 
-Cualquiera con acceso al repo puede proponer una ficha (adopción, acogida, perdido, donación o
-evento) sin tocar código, abriendo un issue con la plantilla **🐾 Nuevo animal**:
+Este flujo es **solo para animales recogidos por el servicio municipal de recogida** — nunca
+para protectoras/asociaciones, que no tienen ninguna presencia en los issues. Cualquiera con
+acceso al repo puede proponer una ficha sin tocar código, abriendo un issue con la plantilla
+**🐾 Animal recogido**:
 
 ```
-Issue "🐾 Nuevo animal" ─┐
-  (protectora, tipo,     ├─ animal-issue.yml          (al abrir/editar el issue)
-   categoría, texto,     │     1. valida    → protectora conocida, campos obligatorios,
-   1 foto, enlace op.)   │                    EXACTAMENTE una foto adjunta
-                         │     2. si falla   → comenta qué falta y etiqueta necesita-cambios
-                         │                    (se revalida solo al editar el issue)
-                         │     3. si vale    → descarga la foto a img/issue-<n>.jpg, añade la
-                         │                    ficha a data/posts.json en una rama nueva y abre
-                         │                    un Pull Request (label pr-abierto)
-                         └─ el PR NO se fusiona solo: hace falta revisión y aprobación manual
+Issue "🐾 Animal recogido" ─┐
+  (fecha y lugar de         ├─ animal-issue.yml          (al abrir/editar el issue)
+   recogida, situación,     │     1. valida    → campos obligatorios, fecha AAAA-MM-DD,
+   descripción op., 1 foto) │                    EXACTAMENTE una foto adjunta
+                            │     2. si falla   → comenta qué falta y etiqueta necesita-cambios
+                            │                    (se revalida solo al editar el issue)
+                            │     3. si vale    → descarga la foto a
+                            │                    img/recogida-issue-<n>.jpg, añade la ficha a
+                            │                    data/animales-recogidos.json en una rama nueva
+                            │                    y abre un Pull Request (label pr-abierto)
+                            └─ el PR NO se fusiona solo: hace falta revisión y aprobación manual
 
 PR fusionado (manual) ─┐
                         ├─ issue-flow-closed.yml
@@ -77,37 +83,35 @@ PR fusionado (manual) ─┐
                         └─ deploy-pages.yml despliega igual que con cualquier otro push a aranda
 ```
 
-Solo se admite **una** foto por issue (si detecta más de una, pide dejar solo una). La
-protectora debe coincidir exactamente con un `name` de [`shelters.json`](shelters.json); añadir
-una protectora nueva a esa lista implica también añadir su opción en la plantilla
-[`nuevo-animal.yml`](.github/ISSUE_TEMPLATE/nuevo-animal.yml).
+Solo se admite **una** foto por issue (si detecta más de una, pide dejar solo una).
 
-Para retirar una ficha ya publicada (adoptada, caso cerrado, duplicada...) hay un segundo flujo,
-plantilla **🗄️ Archivar animal**: solo pide el **id** de la ficha (se ve en la propia web, botón
-🔗 de cada tarjeta → lo que va tras `#post-` en el enlace copiado), más nombre/descripción
-opcionales solo como referencia humana. `archive-issue.yml` valida que ese id exista en
-`data/posts.json` y, si es así, abre un PR que la mueve a `data/archive/<AAAA>.json`
-(reconstruyendo el índice de años, igual que `fetch.mjs`) — mismo esquema de validación → PR →
-revisión manual → `issue-flow-closed.yml` que el alta.
+Retirar una ficha de la portada es siempre **manual** — nunca automático ni por antigüedad —
+mediante un segundo flujo, plantilla **🗄️ Archivar animal**: pide el **id** de la ficha (es
+`recogida-issue-` + el número del issue que la publicó) y opcionalmente un motivo (adoptado,
+reclamado, trasladado a una protectora...). `archive-issue.yml` valida que ese id exista en
+`data/animales-recogidos.json` y, si es así, abre un PR que la quita de ahí y añade una entrada
+a [`data/archivo.json`](data/archivo.json) con un enlace al issue original — mismo esquema de
+validación → PR → revisión manual → `issue-flow-closed.yml` que el alta.
 
 ## Estructura
 
 | Ruta | Qué es |
 |---|---|
 | `index.html`, `archivo/`, `protectoras/`, `mapa-colonias/`, `info/` | Las cinco páginas (comparten `styles.css`). |
-| `app.js` | Render de tarjetas + filtros + «Mostrar más» + anclas (solo `/archivo/`). |
 | `nav.js` | Menú hamburguesa en móvil. |
 | `analytics.js` | Google Analytics 4 con consentimiento explícito (banner «Aceptar»/«Denegar»). |
 | `colonias-map.js` | Mapa de colonias felinas (Leaflet + OpenStreetMap) en `/mapa-colonias/`. |
 | `recogidas.js` | Fichas del servicio municipal de recogida en la portada (`/`). |
-| `scripts/fetch.mjs` | Pipeline de Instagram (fetch + clasificación + partición + poda). |
-| `scripts/lib.mjs` | Utilidades del pipeline (`excerpt`, clasificación Gemini). |
-| `scripts/parse-animal-issue.mjs` | Valida un issue "Nuevo animal" y genera su ficha (ver abajo). |
+| `archivo.js` | Listado enlazado a issues de GitHub en `/archivo/`. |
+| `scripts/fetch.mjs` | Pipeline de Instagram (fetch + clasificación + partición + poda) — **sin consumidor activo**: nada muestra ya `data/posts.json` en el sitio, ver Notas. |
+| `scripts/lib.mjs` | Utilidades del pipeline (`excerpt`, `parseIssueBody`, clasificación Gemini). |
+| `scripts/parse-animal-issue.mjs` | Valida un issue "Animal recogido" y genera su ficha (ver abajo). |
 | `scripts/parse-archive-issue.mjs` | Valida un issue "Archivar animal" y mueve la ficha al archivo. |
-| `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto. |
-| `data/posts.json` · `data/archive/*.json` | Datos generados (portada / archivo). |
+| `shelters.json` | Lista de protectoras: `username`, `name`, `zone`, `instagramUrl` + contacto (solo para `/protectoras/`). |
+| `data/posts.json` | Escrito a diario por `fetch.mjs`; ninguna página lo lee actualmente. |
 | `data/colonias.json` | Colonias felinas que pinta `/mapa-colonias/` (edición manual). |
-| `data/animales-recogidos.json` | Fichas del servicio municipal de recogida que pinta la portada (`/`) (edición manual). |
+| `data/animales-recogidos.json` | Fichas del servicio municipal de recogida que pinta la portada (`/`) (edición manual o por issue). |
+| `data/archivo.json` | Fichas retiradas de la portada, con enlace a su issue original, que pinta `/archivo/`. |
 | `img/` | Imágenes de posts (`<shortcode>.jpg`, `issue-<n>.jpg`) + assets (`logo-web.jpg`, `hero.jpg`, `og.jpg`, `placeholder.svg`, `shelters/`). |
 | `.github/ISSUE_TEMPLATE/` | `nuevo-animal.yml` y `archivar-animal.yml`: formularios para proponer/retirar una ficha desde un issue. |
 | `.github/workflows/` | `update.yml` (cron Instagram + clasificación), `deploy-pages.yml` (despliega en cada push), `animal-issue.yml` + `archive-issue.yml` + `issue-flow-closed.yml` (fichas por issue). |
@@ -154,7 +158,7 @@ python3 -m http.server                                        # sirve el sitio e
   later"), es transitorio: relanzar *Desplegar en GitHub Pages*.
 - **Añadir/quitar protectora o contactos/logos:** editar `shelters.json` (y opcionalmente subir
   `img/shelters/<username>.jpg`). Nada más.
-- **Verificar en vivo** saltando la caché del CDN: `curl "https://peluditos.arandadeduero.dev/data/posts.json?cb=$RANDOM"`.
+- **Verificar en vivo** saltando la caché del CDN: `curl "https://peluditos.arandadeduero.dev/data/animales-recogidos.json?cb=$RANDOM"`.
 
 ## Ajustes (en `scripts/fetch.mjs`)
 

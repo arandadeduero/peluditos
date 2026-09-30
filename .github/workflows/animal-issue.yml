@@ -1,9 +1,9 @@
 name: Nuevo animal desde issue
 
-# Valida los issues abiertos con la plantilla "🐾 Nuevo animal" (label nuevo-animal) y, si los
-# datos son correctos, genera la ficha (descarga la foto, actualiza data/posts.json) en una
-# rama nueva y abre un Pull Request para revisión manual. No publica nada directamente: solo
-# fusionar el PR a mano despliega el cambio.
+# Valida los issues abiertos con la plantilla "🐾 Animal recogido" (label nuevo-animal) y, si
+# los datos son correctos, genera la ficha (descarga la foto, actualiza
+# data/animales-recogidos.json) en una rama nueva y abre un Pull Request para revisión manual.
+# No publica nada directamente: solo fusionar el PR a mano despliega el cambio.
 #
 # El cuerpo del issue es texto NO confiable (lo escribe cualquiera con acceso al repo). Por eso
 # se pasa siempre por `env:` a scripts/parse-animal-issue.mjs — nunca se interpola en `run:` —
@@ -92,7 +92,7 @@ jobs:
           git config user.name "peluditos-bot"
           git config user.email "actions@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add data/posts.json "img/${POST_ID}.jpg"
+          git add data/animales-recogidos.json "img/${POST_ID}.jpg"
           git commit -m "Nueva ficha desde issue #${ISSUE_NUMBER}"
           git push -u origin "$BRANCH" --force
 

@@ -1,41 +1,34 @@
 name: "🗄️ Archivar animal"
-description: Mueve una ficha ya publicada de la portada al archivo (adoptado, caso cerrado, duplicado, etc.)
+description: Retira del listado activo la ficha de un animal que ya no está bajo custodia municipal (adoptado, reclamado, trasladado...).
 title: "[Archivar] "
 labels: ["archivar-animal"]
 body:
   - type: markdown
     attributes:
       value: |
-        Para archivar una ficha hace falta su **id**. Lo encuentras en la propia web: pulsa el
-        botón 🔗 "Copiar enlace a esta ficha" en la tarjeta — el id es lo que aparece después de
-        `#post-` en el enlace copiado (ej. `.../#post-issue-1` → id `issue-1`).
+        Para archivar una ficha hace falta su **id**: es `recogida-issue-` seguido del número del
+        issue que la publicó (ej. el issue #12 generó el id `recogida-issue-12`; lo ves en la
+        URL de ese issue o en el título del Pull Request que lo publicó).
 
-        Un workflow automático comprobará que ese id existe en la portada. Si es correcto,
-        abrirá un Pull Request que mueve la ficha al archivo — para revisión manual antes de
-        fusionar.
+        Esto es manual, no automático: una ficha permanece activa hasta que alguien abre este
+        formulario para archivarla.
+
+        Un workflow automático comprobará que ese id existe. Si es correcto, abrirá un Pull
+        Request que mueve la ficha al archivo — para revisión manual antes de fusionar.
 
   - type: input
     id: post_id
     attributes:
       label: Id de la ficha
-      description: Tal cual aparece tras "#post-" en el enlace de la ficha.
-      placeholder: "Ej: issue-1"
+      placeholder: "Ej: recogida-issue-12"
     validations:
       required: true
 
   - type: input
-    id: nombre
+    id: motivo
     attributes:
-      label: Nombre del animal (opcional)
-      description: Solo para identificarla mejor al revisar el issue.
-      placeholder: "Ej: Thor"
-    validations:
-      required: false
-
-  - type: textarea
-    id: descripcion
-    attributes:
-      label: Descripción (opcional)
-      description: Por qué se archiva o cualquier detalle relevante (adoptado, caso cerrado, duplicado, error...).
+      label: Motivo (opcional)
+      description: Por qué se archiva (adoptado, reclamado por su propietario, trasladado a una protectora...).
+      placeholder: "Ej: Adoptado"
     validations:
       required: false

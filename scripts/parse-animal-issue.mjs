@@ -1,41 +1,31 @@
 #!/usr/bin/env node
-// Peluditos — valida un issue "Nuevo animal" y, si es correcto, genera la ficha:
-// descarga la foto a img/issue-<n>.jpg y añade la entrada a data/posts.json.
-// No publica nada por sí mismo: el workflow que lo invoca crea una rama + PR con
-// el resultado, para revisión manual antes de fusionar.
+// Peluditos — valida un issue "Animal recogido" y, si es correcto, genera la ficha:
+// descarga la foto a img/recogida-issue-<n>.jpg y añade la entrada a
+// data/animales-recogidos.json. Es exclusivamente para animales recogidos por el servicio
+// municipal de recogida — no para protectoras/asociaciones, que gestionan sus adopciones
+// por su cuenta y no aparecen aquí.
+// No publica nada por sí mismo: el workflow que lo invoca crea una rama + PR con el
+// resultado, para revisión manual antes de fusionar.
 //
 // Entrada por variables de entorno (las pone el workflow, nunca se interpolan en
 // shell — así el cuerpo del issue, que es texto no confiable, solo se trata como
 // datos):
-//   ISSUE_NUMBER, ISSUE_BODY, ISSUE_URL, ISSUE_CREATED_AT
+//   ISSUE_NUMBER, ISSUE_BODY, ISSUE_URL
 //
 // Salida: imprime un JSON de una línea en stdout con el resultado
-//   { ok:true,  postId, permalink }
+//   { ok:true,  postId, fechaRecogida, lugarRecogida }
 //   { ok:false, errors:[...] }
-// y dos formas de estado: si ok=true dejará escritos data/posts.json y la imagen;
-// si ok=false no toca ningún fichero del sitio.
+// y dos formas de estado: si ok=true dejará escritos data/animales-recogidos.json y la
+// imagen; si ok=false no toca ningún fichero del sitio.
 
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { excerpt, parseIssueBody } from './lib.mjs';
+import { parseIssueBody } from './lib.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SHELTERS = path.join(ROOT, 'shelters.json');
-const DATA = path.join(ROOT, 'data', 'posts.json');
+const DATA = path.join(ROOT, 'data', 'animales-recogidos.json');
 const IMG_DIR = path.join(ROOT, 'img');
-
-const ANIMAL_MAP = { perro: 'perro', gato: 'gato', otro: 'otro' };
-const CATEGORIA_MAP = {
-  'adopción': 'adopcion', adopcion: 'adopcion',
-  acogida: 'acogida',
-  perdido: 'perdido',
-  'donación': 'donacion', donacion: 'donacion',
-  evento: 'evento',
-  otra: 'otro', otro: 'otro',
-};
-
-// parseIssueBody vive en lib.mjs (la comparte parse-archive-issue.mjs).
 
 // Solo confiamos en imágenes servidas por los propios CDN de adjuntos de GitHub. Según el
 // cliente (arrastrar, pegar, móvil...) el issue las vuelca como Markdown "![]()" o como
@@ -51,9 +41,7 @@ export function extractImages(body) {
   return [...new Set([...md, ...html])];
 }
 
-function isHttpUrl(s) {
-  return /^https?:\/\/\S+$/i.test(s || '');
-}
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 async function downloadImage(url, filename) {
   const res = await fetch(url);
@@ -61,26 +49,22 @@ async function downloadImage(url, filename) {
   await writeFile(path.join(IMG_DIR, filename), Buffer.from(await res.arrayBuffer()));
 }
 
-export function validate(fields, body, shelters) {
+export function validate(fields, body) {
   const errors = [];
 
-  const protectoraNombre = (fields['Protectora'] || '').trim();
-  const shelter = shelters.find((s) => s.name.toLowerCase() === protectoraNombre.toLowerCase());
-  if (!protectoraNombre) errors.push('Falta indicar la **protectora**.');
-  else if (!shelter) errors.push(`La protectora «${protectoraNombre}» no coincide con ninguna de la lista (revisa \`shelters.json\`).`);
+  const fechaRecogida = (fields['Fecha de recogida'] || '').trim();
+  if (!fechaRecogida) errors.push('Falta la **fecha de recogida**.');
+  else if (!DATE_RE.test(fechaRecogida) || Number.isNaN(Date.parse(fechaRecogida))) {
+    errors.push('La **fecha de recogida** debe tener el formato AAAA-MM-DD (ej. 2026-09-30).');
+  }
 
-  const animalRaw = (fields['Tipo de animal'] || '').trim().toLowerCase();
-  const animal = ANIMAL_MAP[animalRaw];
-  if (!animalRaw) errors.push('Falta indicar el **tipo de animal**.');
-  else if (!animal) errors.push(`Tipo de animal «${fields['Tipo de animal']}» no reconocido (usa el desplegable).`);
+  const lugarRecogida = (fields['Lugar de recogida'] || '').trim();
+  if (!lugarRecogida) errors.push('Falta el **lugar de recogida**.');
 
-  const categoriaRaw = (fields['Categoría de la publicación'] || '').trim().toLowerCase();
-  const categoria = CATEGORIA_MAP[categoriaRaw];
-  if (!categoriaRaw) errors.push('Falta indicar la **categoría de la publicación**.');
-  else if (!categoria) errors.push(`Categoría «${fields['Categoría de la publicación']}» no reconocida (usa el desplegable).`);
+  const situacion = (fields['Situación'] || '').trim();
+  if (!situacion) errors.push('Falta la **situación**.');
 
-  const descripcion = (fields['Descripción'] || '').trim();
-  if (!descripcion) errors.push('Falta la **descripción**.');
+  const descripcion = (fields['Descripción (opcional)'] || '').trim();
 
   // Contamos las imágenes en TODO el cuerpo (no solo en el campo «Foto»): así detectamos
   // también a quien arrastra la imagen en un campo equivocado o sube más de una.
@@ -88,67 +72,43 @@ export function validate(fields, body, shelters) {
   if (images.length === 0) errors.push('Falta **una foto**: arrástrala al campo «Foto» del formulario.');
   else if (images.length > 1) errors.push(`Se han detectado ${images.length} fotos y solo se admite **una**. Deja una sola imagen en el issue.`);
 
-  const enlaceRaw = (fields['Enlace relacionado (opcional)'] || '').trim();
-  const enlace = isHttpUrl(enlaceRaw) ? enlaceRaw : '';
-  if (enlaceRaw && !enlace) errors.push('El **enlace relacionado** no parece una URL válida (debe empezar por http:// o https://).');
-
-  return {
-    errors,
-    shelter,
-    animal,
-    categoria,
-    descripcion,
-    nombre: (fields['Nombre del animal (opcional)'] || '').trim(),
-    imageUrl: images[0],
-    enlace,
-  };
+  return { errors, fechaRecogida, lugarRecogida, situacion, descripcion, imageUrl: images[0] };
 }
 
 async function main() {
   const issueNumber = process.env.ISSUE_NUMBER;
   const issueBody = process.env.ISSUE_BODY || '';
   const issueUrl = process.env.ISSUE_URL;
-  const issueCreatedAt = process.env.ISSUE_CREATED_AT;
-  if (!issueNumber || !issueUrl || !issueCreatedAt) throw new Error('Faltan variables de entorno ISSUE_*');
+  if (!issueNumber || !issueUrl) throw new Error('Faltan variables de entorno ISSUE_*');
 
-  const shelters = JSON.parse(await readFile(SHELTERS, 'utf8'));
   const fields = parseIssueBody(issueBody);
-  const v = validate(fields, issueBody, shelters);
+  const v = validate(fields, issueBody);
 
   if (v.errors.length) {
     console.log(JSON.stringify({ ok: false, errors: v.errors }));
     return;
   }
 
-  const id = `issue-${issueNumber}`;
+  const id = `recogida-issue-${issueNumber}`;
   const filename = `${id}.jpg`;
   await downloadImage(v.imageUrl, filename);
 
-  const caption = v.nombre ? `${v.nombre}. ${v.descripcion}` : v.descripcion;
-  const permalink = v.enlace || issueUrl;
-
-  const post = {
+  const entry = {
     id,
-    shelter: v.shelter.name,
-    shelterUrl: v.shelter.instagramUrl,
-    zone: v.shelter.zone || '',
-    date: issueCreatedAt,
-    caption,
-    excerpt: excerpt(caption),
-    image: `img/${filename}`,
-    images: [`img/${filename}`],
-    permalink,
-    type: v.animal,
-    tipo: v.categoria,
-    source: 'issue',
+    foto: `img/${filename}`,
+    fechaRecogida: v.fechaRecogida,
+    lugarRecogida: v.lugarRecogida,
+    situacion: v.situacion,
+    descripcion: v.descripcion,
+    issueUrl,
   };
 
   const current = JSON.parse(await readFile(DATA, 'utf8').catch(() => '[]'));
   const filtered = current.filter((p) => p.id !== id); // por si se revalida un issue ya publicado
-  const all = [post, ...filtered].sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+  const all = [entry, ...filtered];
   await writeFile(DATA, JSON.stringify(all, null, 2) + '\n');
 
-  console.log(JSON.stringify({ ok: true, postId: id, permalink }));
+  console.log(JSON.stringify({ ok: true, postId: id, fechaRecogida: v.fechaRecogida, lugarRecogida: v.lugarRecogida }));
 }
 
 // ---------- self-test ----------
@@ -156,66 +116,53 @@ function selfTest() {
   const assert = (c, m) => { if (!c) throw new Error('self-test FALLÓ: ' + m); };
 
   const body = [
-    '### Protectora',
+    '### Fecha de recogida',
     '',
-    'Huellaranda',
+    '2026-09-30',
     '',
-    '### Nombre del animal (opcional)',
+    '### Lugar de recogida',
+    '',
+    'Calle Fuenteminaya, Aranda de Duero',
+    '',
+    '### Situación',
+    '',
+    'En custodia municipal',
+    '',
+    '### Descripción (opcional)',
     '',
     '_No response_',
-    '',
-    '### Tipo de animal',
-    '',
-    'Perro',
-    '',
-    '### Categoría de la publicación',
-    '',
-    'Adopción',
-    '',
-    '### Descripción',
-    '',
-    'Muy bueno con niños.',
     '',
     '### Foto',
     '',
     '![img](https://github.com/user-attachments/assets/abc123)',
-    '',
-    '### Enlace relacionado (opcional)',
-    '',
-    '_No response_',
   ].join('\n');
 
   const fields = parseIssueBody(body);
-  assert(fields['Protectora'] === 'Huellaranda', 'parseIssueBody: protectora');
-  assert(fields['Nombre del animal (opcional)'] === '', 'parseIssueBody: "_No response_" -> ""');
-  assert(fields['Descripción'] === 'Muy bueno con niños.', 'parseIssueBody: descripcion');
+  assert(fields['Fecha de recogida'] === '2026-09-30', 'parseIssueBody: fecha');
+  assert(fields['Lugar de recogida'] === 'Calle Fuenteminaya, Aranda de Duero', 'parseIssueBody: lugar');
+  assert(fields['Situación'] === 'En custodia municipal', 'parseIssueBody: situacion');
+  assert(fields['Descripción (opcional)'] === '', 'parseIssueBody: "_No response_" -> ""');
 
   assert(extractImages(body).length === 1, 'extractImages: detecta 1 imagen de attachments de GitHub (Markdown)');
   assert(extractImages('![x](https://evil.example.com/a.jpg)').length === 0, 'extractImages: ignora dominios no confiables');
 
-  // Formato real que usa GitHub cuando se arrastra/pega una imagen: <img> HTML, no Markdown.
   const htmlImgBody =
     '<img width="3072" height="4080" alt="Image" src="https://github.com/user-attachments/assets/b2d63c7a-86e0-4bfc-a542-b9cbedcc2209" />';
   assert(extractImages(htmlImgBody).length === 1, 'extractImages: detecta 1 imagen en formato <img> HTML');
-  assert(
-    extractImages(htmlImgBody)[0] === 'https://github.com/user-attachments/assets/b2d63c7a-86e0-4bfc-a542-b9cbedcc2209',
-    'extractImages: extrae la URL correcta del <img> HTML'
-  );
   assert(extractImages('<img src="https://evil.example.com/a.jpg">').length === 0, 'extractImages: <img> ignora dominios no confiables');
 
-  const shelters = [{ name: 'Huellaranda', instagramUrl: 'https://instagram.com/huellaranda', zone: 'Aranda de Duero' }];
-  const v = validate(fields, body, shelters);
+  const v = validate(fields, body);
   assert(v.errors.length === 0, 'validate: formulario completo sin errores: ' + JSON.stringify(v.errors));
-  assert(v.animal === 'perro' && v.categoria === 'adopcion', 'validate: normaliza animal/categoria');
+  assert(v.fechaRecogida === '2026-09-30' && v.lugarRecogida.includes('Fuenteminaya'), 'validate: campos correctos');
 
-  const bad = validate(parseIssueBody(body.replace('Huellaranda', 'OtraProtectora')), body, shelters);
-  assert(bad.errors.some((e) => e.includes('no coincide')), 'validate: protectora desconocida da error');
+  const badDate = validate(parseIssueBody(body.replace('2026-09-30', '30/09/2026')), body);
+  assert(badDate.errors.some((e) => e.includes('formato AAAA-MM-DD')), 'validate: fecha con formato inválido da error');
 
-  const noImg = validate(fields, body.replace(/!\[img\].*\)/, ''), shelters);
+  const noImg = validate(fields, body.replace(/!\[img\].*\)/, ''));
   assert(noImg.errors.some((e) => e.includes('Falta **una foto**')), 'validate: sin foto da error');
 
   const twoImgs = body + '\n![img2](https://github.com/user-attachments/assets/def456)';
-  const dup = validate(parseIssueBody(twoImgs), twoImgs, shelters);
+  const dup = validate(parseIssueBody(twoImgs), twoImgs);
   assert(dup.errors.some((e) => e.includes('solo se admite')), 'validate: dos fotos da error');
 
   console.log('self-test OK');

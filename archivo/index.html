@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="../">
   <title>Archivo — Peluditos</title>
-  <meta name="description" content="Archivo por años de las publicaciones de las protectoras y asociaciones de animales de Aranda de Duero.">
+  <meta name="description" content="Archivo de animales que ya no están bajo custodia del servicio municipal de recogida de Aranda de Duero.">
   <link rel="canonical" href="https://peluditos.arandadeduero.dev/archivo/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Peluditos">
   <meta property="og:locale" content="es_ES">
   <meta property="og:title" content="Archivo — Peluditos">
-  <meta property="og:description" content="Archivo por años de las publicaciones de las protectoras y asociaciones de animales de Aranda de Duero.">
+  <meta property="og:description" content="Archivo de animales que ya no están bajo custodia del servicio municipal de recogida de Aranda de Duero.">
   <meta property="og:url" content="https://peluditos.arandadeduero.dev/archivo/">
   <meta property="og:image" content="https://peluditos.arandadeduero.dev/img/og.jpg?v=3">
   <meta property="og:image:width" content="1200">
@@ -19,15 +19,15 @@
   <meta property="og:image:alt" content="Un cachorro y un gatito jugando juntos">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Archivo — Peluditos">
-  <meta name="twitter:description" content="Archivo por años de las publicaciones de las protectoras de Aranda de Duero.">
+  <meta name="twitter:description" content="Archivo de animales que ya no están bajo custodia del servicio municipal de recogida de Aranda de Duero.">
   <meta name="twitter:image" content="https://peluditos.arandadeduero.dev/img/og.jpg?v=3">
   <link rel="icon" href="img/logo-web.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="styles.css?v=12">
 </head>
-<body data-source="archive">
+<body>
   <header class="topbar">
     <div class="container topbar__inner">
       <a class="brand" href="./">
@@ -52,13 +52,14 @@
 
   <div class="container">
     <h1 class="page-title">Archivo</h1>
-    <p class="page-lead">Publicaciones de más de 4 meses, agrupadas por año.</p>
+    <p class="page-lead">Animales que estuvieron bajo custodia del servicio municipal de recogida
+       y ya no lo están (adoptados, reclamados por su propietario, trasladados...). Archivarlos es
+       manual: cada ficha queda documentada en su issue de GitHub original.</p>
   </div>
 
   <main class="container">
-    <div id="grid"></div>
-    <p id="empty" class="empty" hidden>Todavía no hay nada en el archivo. Las publicaciones pasan aquí al superar los 4 meses.</p>
-    <nav id="pager" class="pager" aria-label="Paginación" hidden></nav>
+    <ul id="archivo-list" class="archivo-list" aria-label="Fichas archivadas"></ul>
+    <p id="archivo-empty" class="empty" hidden>Todavía no hay nada en el archivo.</p>
   </main>
 
   <footer class="site-footer">
@@ -84,7 +85,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=2" defer></script>
+  <script src="archivo.js?v=1" defer></script>
   <script src="nav.js?v=1" defer></script>
   <script src="analytics.js?v=1" defer></script>
 </body>

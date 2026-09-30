@@ -1,9 +1,9 @@
 name: Archivar animal desde issue
 
 # Valida los issues abiertos con la plantilla "🗄️ Archivar animal" (label archivar-animal) y,
-# si el id existe en la portada, mueve esa ficha a data/archive/ en una rama nueva y abre un
-# Pull Request para revisión manual. No publica nada directamente: solo fusionar el PR a mano
-# aplica el cambio.
+# si el id existe en data/animales-recogidos.json, mueve esa ficha a data/archivo.json en una
+# rama nueva y abre un Pull Request para revisión manual. No publica nada directamente: solo
+# fusionar el PR a mano aplica el cambio.
 #
 # El cuerpo del issue es texto NO confiable. Por eso se pasa siempre por `env:` a
 # scripts/parse-archive-issue.mjs — nunca se interpola en `run:`.
@@ -81,19 +81,19 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           POST_ID=$(node -e 'console.log(JSON.parse(process.env.RESULT).postId)')
-          SHELTER=$(node -e 'console.log(JSON.parse(process.env.RESULT).shelter)')
-          YEAR=$(node -e 'console.log(JSON.parse(process.env.RESULT).year)')
+          LUGAR=$(node -e 'console.log(JSON.parse(process.env.RESULT).lugarRecogida)')
+          FECHA=$(node -e 'console.log(JSON.parse(process.env.RESULT).fechaRecogida)')
           BRANCH="archive-issue-${ISSUE_NUMBER}"
 
           git config user.name "peluditos-bot"
           git config user.email "actions@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add data/posts.json data/archive
+          git add data/animales-recogidos.json data/archivo.json
           git commit -m "Archivar ficha ${POST_ID} (issue #${ISSUE_NUMBER})"
           git push -u origin "$BRANCH" --force
 
           {
-            echo "Archiva la ficha \`${POST_ID}\` (${SHELTER}, año ${YEAR}) a partir del issue #${ISSUE_NUMBER}."
+            echo "Archiva la ficha \`${POST_ID}\` (recogida en ${LUGAR}, ${FECHA}) a partir del issue #${ISSUE_NUMBER}."
             echo ""
             echo "Revisa el cambio antes de fusionar. Al fusionar este PR la ficha se moverá al archivo y el issue se cerrará solo."
             echo ""

@@ -37,7 +37,7 @@ jobs:
         if: ${{ github.event.pull_request.merged == true && steps.issue.outputs.kind == 'publish' }}
         run: |
           gh issue edit "${{ steps.issue.outputs.number }}" --add-label "publicado" --remove-label "pr-abierto" 2>/dev/null || true
-          gh issue comment "${{ steps.issue.outputs.number }}" --body "🎉 ¡Publicado! Ya puedes verlo en https://peluditos.arandadeduero.dev/#post-issue-${{ steps.issue.outputs.number }}"
+          gh issue comment "${{ steps.issue.outputs.number }}" --body "🎉 ¡Publicado! Ya puedes verlo en https://peluditos.arandadeduero.dev/"
 
       - name: Archivado (PR fusionado)
         if: ${{ github.event.pull_request.merged == true && steps.issue.outputs.kind == 'archive' }}
